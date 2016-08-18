@@ -1,0 +1,39 @@
+{
+  "name": "lyricfier",
+  "version": "0.1.0",
+  "description": "Fetching lyrics for spotify desktop client",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/emilioastarita/lyrics-spotify.git"
+  },
+  "keywords": [
+    "spotify",
+    "lyrics",
+    "electron",
+    "nodejs"
+  ],
+  "author": "Emilio Astarita",
+  "license": "CC0-1.0",
+  "bugs": {
+    "url": "https://github.com/emilioastarita/lyrics-spotify/issues"
+  },
+  "homepage": "https://github.com/emilioastarita/lyrics-spotify#readme",
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.0"
+  },
+  "dependencies": {
+    "async": "^2.0.1",
+    "cheerio": "^0.20.0",
+    "electron-json-storage": "^2.0.0",
+    "he": "^1.1.0",
+    "jquery": "^3.1.0",
+    "materialize-css": "^0.97.7",
+    "request": "^2.74.0",
+    "vue": "^1.0.26",
+    "vue-class-component": "^3.2.0"
+  }
+}

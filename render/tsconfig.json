@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es5",
+    "sourceMap": true,
+    "experimentalDecorators": true
+  },
+  "files": [
+    "LyricfierRender.ts",
+    "SettingsRender.ts",
+    "SongRender.ts"
+  ]
+}

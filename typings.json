@@ -1,0 +1,9 @@
+{
+  "globalDependencies": {
+    "electron-json-storage": "registry:dt/electron-json-storage#0.0.0+20160324000215",
+    "github-electron": "registry:dt/github-electron#1.2.5+20160812193136",
+    "jquery": "registry:dt/jquery#1.10.0+20160704162008",
+    "node-4": "registry:dt/node-4#4.0.0+20160801161248",
+    "vue": "registry:dt/vue#1.0.21+20160720100422"
+  }
+}
