@@ -18,6 +18,7 @@ const plugins = [MusicMatch, SearchWikia];
 
 export class Lyricfier {
     protected service:SpotifyService;
+    protected lastSongSync = {};
     protected rootDir = '';
     protected window:Electron.BrowserWindow;
     protected app:Electron.App;
@@ -164,16 +165,40 @@ export class Lyricfier {
         this.getOpenWindow().webContents.send('change-view', 'SongLyrics');
     }
 
+    isLastSong(song) {
+        for (let k of Object.keys(song)) {
+            if (song[k] !== this.lastSongSync[k]) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    saveLastSong(song) {
+        for (let k of Object.keys(song)) {
+            this.lastSongSync[k] = song[k];
+        }
+    }
+
     syncLyrics() {
+        this.getOpenWindow().webContents.send('status', 'Getting current song!');
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
-                return;
+                this.getOpenWindow().webContents.send('status', 'Current song error: ' + err);
             }
+            if (this.isLastSong(song)) {
+                this.getOpenWindow().webContents.send('status', 'Sending last song');
+                return this.getOpenWindow().webContents.send('song-sync', this.lastSongSync);
+            }
+            this.getOpenWindow().webContents.send('status', 'Current song: ' + song.title);
             this.search(song.title, song.artist, (err, lyric) => {
                 if (err) {
+                    this.getOpenWindow().webContents.send('status', 'Plugin error: ' + err);
                     return;
                 }
+                this.getOpenWindow().webContents.send('status', 'Song result!');
                 song.lyric = lyric;
+                this.saveLastSong(song);
                 this.getOpenWindow().webContents.send('song-sync', song);
             });
         });

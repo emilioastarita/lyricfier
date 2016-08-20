@@ -41,8 +41,9 @@
 <script type="text/javascript" src="../../node_modules/materialize-css/dist/js/materialize.min.js"></script>
 <script>
     const LyricfierRender = require('../LyricfierRender');
-    new LyricfierRender({
+    const lyrics = new LyricfierRender({
         el: 'LyricfierRender',
         });
+    lyrics.setMaterialize(Materialize);
 </script>
 </html>
