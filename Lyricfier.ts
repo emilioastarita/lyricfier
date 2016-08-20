@@ -70,7 +70,13 @@ export class Lyricfier {
     }
 
     createWindow() {
-        this.window = new electron.BrowserWindow({width: 500, height: 600, show: false});
+        let options = {
+            width: 500,
+            height: 600,
+            icon: this.getImg('icon.png'),
+            show: false
+        };
+        this.window = new electron.BrowserWindow(options);
         this.window.on('close', (e) => {
             e.preventDefault();
             this.window.hide();
@@ -180,7 +186,11 @@ export class Lyricfier {
             this.window.loadURL(this.getView('index'));
         }
         if (this.window.isMinimized()) {
+            console.log('restor called');
             this.window.restore();
+        }
+        if (!this.window.isFocused()) {
+            this.window.focus();
         }
         return this.window;
     }
