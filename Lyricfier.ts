@@ -6,6 +6,7 @@ import {SpotifyService} from './SpotifyService';
 import BrowserWindow = Electron.BrowserWindow;
 import {SearchLyrics} from './plugins/SearchLyrics';
 import {SearchWikia} from "./plugins/SearchWikia";
+import {MusicMatch} from "./plugins/MusicMatch";
 const request = require('request');
 const async = require('async');
 
@@ -13,7 +14,7 @@ interface Settings {
     port: string;
 }
 
-const plugins = [SearchWikia];
+const plugins = [MusicMatch, SearchWikia];
 
 export class Lyricfier {
     protected service:SpotifyService;
