@@ -4,9 +4,10 @@ var electron = require('electron');
 var storage = require('electron-json-storage');
 var SpotifyService_1 = require('./SpotifyService');
 var SearchWikia_1 = require("./plugins/SearchWikia");
+var MusicMatch_1 = require("./plugins/MusicMatch");
 var request = require('request');
 var async = require('async');
-var plugins = [SearchWikia_1.SearchWikia];
+var plugins = [MusicMatch_1.MusicMatch, SearchWikia_1.SearchWikia];
 var Lyricfier = (function () {
     function Lyricfier(app, root) {
         var _this = this;
