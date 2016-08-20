@@ -42,6 +42,7 @@ import {SongRender} from './SongRender';
   `
 })
 class LyricfierRender {
+    protected materialize;
 
     data() {
         return {
@@ -54,7 +55,9 @@ class LyricfierRender {
             'currentView': 'SongRender'
         }
     }
-
+    setMaterialize(m) {
+        this.materialize = m;
+    }
     ready() {
         console.log('Loaded....')
         $(".button-collapse").sideNav();
@@ -67,6 +70,9 @@ class LyricfierRender {
                 body: `Playing ` + song.title + ` - ` + song.artist,
                 icon: '../img/icon.png'
             });
+        });
+        this.ipc.on('status', (event, msg) => {
+            this.materialize.toast(msg, 5000);
         });
     }
 
