@@ -2,7 +2,7 @@ const request = require('request');
 const async = require('async');
 
 export class SpotifyService {
-
+    protected settings;
     protected port = 4370;
     protected portTries = 15;
 
@@ -13,8 +13,8 @@ export class SpotifyService {
     protected csrfToken = null;
     protected queue = [];
 
-    constructor() {
-
+    constructor(settings) {
+        this.settings = settings;
     }
 
     protected headers() {
