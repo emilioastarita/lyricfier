@@ -14,7 +14,6 @@ import Component from 'vue-class-component'
     },
     template: `
     <a @click="sync" title="Sync current song" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">replay</i></a>
-    <h2 class="flow-text">lyricfier</h2>
     <hr />
     <div v-if="song">
         <h3 class="flow-text">{{song.title}}</h3>  
@@ -41,7 +40,7 @@ export class SongRender {
 
     ready() {
         console.log('SongRender ready!');
-
+        this.ipc.send('get-lyrics');
         this.ipc.on('song-sync', (event, song) => {
             console.log('song sync', song);
             this.song = {};
