@@ -82,6 +82,11 @@ export class Lyricfier {
             e.preventDefault();
             this.window.hide();
         });
+        this.window.loadURL(this.getView('index'));
+        this.window.once('ready-to-show', () => {
+            this.window.show();
+        })
+
         return this.window;
     }
 
@@ -207,7 +212,6 @@ export class Lyricfier {
     getOpenWindow() {
         if (!this.window.isVisible()) {
             this.window.show();
-            this.window.loadURL(this.getView('index'));
         }
         if (this.window.isMinimized()) {
             console.log('restor called');

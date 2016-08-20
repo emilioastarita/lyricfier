@@ -43,6 +43,7 @@ import {SongRender} from './SongRender';
 })
 class LyricfierRender {
     protected materialize;
+    protected hasFocus = false;
 
     data() {
         return {
@@ -59,7 +60,8 @@ class LyricfierRender {
         this.materialize = m;
     }
     ready() {
-        console.log('Loaded....')
+        console.log('Loaded....');
+
         $(".button-collapse").sideNav();
         this.ipc.on('change-view', (event, page) => {
             this.changeView(page);
