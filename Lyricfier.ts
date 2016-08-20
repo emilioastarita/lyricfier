@@ -136,9 +136,8 @@ export class Lyricfier {
 
     createTrayMenu() {
         const menu = [
-            ['Sync Current', 'syncLyrics'],
-            ['Settings', 'showSettings'],
             ['Lyrics', 'showLyrics'],
+            ['Settings', 'showSettings'],
             ['Open Developer Tools', 'openDeveloperTools'],
             ['Quit', 'quit']
         ];
