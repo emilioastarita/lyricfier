@@ -43,7 +43,8 @@ import {SongRender} from './SongRender';
 })
 class LyricfierRender {
     protected materialize;
-    protected hasFocus = false;
+    protected ipc;
+    protected currentView;
 
     data() {
         return {

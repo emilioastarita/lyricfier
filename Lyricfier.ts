@@ -190,6 +190,7 @@ export class Lyricfier {
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
                 this.getOpenWindow().webContents.send('status', 'Current song error: ' + err);
+                return;
             }
             if (this.isLastSong(song)) {
                 this.getOpenWindow().webContents.send('status', 'Sending last song');
