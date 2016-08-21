@@ -56,6 +56,8 @@ import Component from 'vue-class-component'
 export class SettingsRender {
     protected modal;
     protected settings;
+    protected ipc;
+    protected shell;
 
 
     data() {

@@ -88,6 +88,7 @@ export class SpotifyService {
 
     public getStatus(cb) {
         this.needsTokens((err, tokens) => {
+            if (err) return cb(err);
             let params = {
                 'oauth': tokens.oauth,
                 'csrf': tokens.csrf,
@@ -108,6 +109,7 @@ export class SpotifyService {
 
     public getCurrentSong(cb) {
         this.getStatus((err, status)=>{
+            if (err) return cb(err);
             if (status.track) {
                 return cb(null, {
                     artist: status.track.artist_resource.name ,

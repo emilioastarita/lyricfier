@@ -31,6 +31,8 @@ import Component from 'vue-class-component'
 export class SongRender {
 
     protected song;
+    protected ipc;
+    protected shell;
 
     data() {
         return {
