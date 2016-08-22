@@ -2,7 +2,7 @@ const request = require('request');
 const async = require('async');
 
 export class SpotifyService {
-    protected settings;
+
     protected port = 4370;
     protected portTries = 15;
 
@@ -13,9 +13,6 @@ export class SpotifyService {
     protected csrfToken = null;
     protected queue = [];
 
-    constructor(settings) {
-        this.settings = settings;
-    }
 
     protected headers() {
         return {'Origin': 'https://open.spotify.com'};
@@ -33,7 +30,6 @@ export class SpotifyService {
         if (this.oAuthToken.t) {
             return cb(null, this.oAuthToken.t);
         }
-        request.debug = true;
         request.get('https://open.spotify.com/token', (err, status, body) => {
             let json = JSON.parse(body);
             this.oAuthToken.t = json.t;

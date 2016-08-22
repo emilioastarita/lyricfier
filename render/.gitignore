@@ -1,2 +1,4 @@
 *.js
 *.map
+plugins/*.js
+plugins/*.js.map

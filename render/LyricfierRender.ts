@@ -1,6 +1,6 @@
 /// <reference path="./render-typings.d.ts" />
 
-
+declare const Materialize;
 import Component from 'vue-class-component';
 import {ipcRenderer, shell}  from 'electron';
 import {SettingsRender} from './SettingsRender';
@@ -36,7 +36,7 @@ import {SongRender} from './SongRender';
       </nav>
       
       <div class="main-view">
-            <componet :is="currentView" :ipc="ipc" :shell="shell"></componet>
+            <componet :is="currentView" :ipc="ipc"  :shell="shell" v-on:status="listenStatus"></componet>
       </div>
     
   `
@@ -45,6 +45,13 @@ class LyricfierRender {
     protected materialize;
     protected ipc;
     protected currentView;
+
+    listenStatus(msg) {
+        console.log('this is ', this);
+        console.log('received status', msg);
+        Materialize.toast(msg, 5000);
+    }
+
 
     data() {
         return {
@@ -57,25 +64,16 @@ class LyricfierRender {
             'currentView': 'SongRender'
         }
     }
-    setMaterialize(m) {
-        this.materialize = m;
-    }
+
     ready() {
         console.log('Loaded....');
-
         $(".button-collapse").sideNav();
         this.ipc.on('change-view', (event, page) => {
             this.changeView(page);
         });
-        this.ipc.on('song-sync', (event, song) => {
-            console.log('ipc receive notification', song);
-            new Notification(song.title, {
-                body: `Playing ` + song.title + ` - ` + song.artist,
-                icon: '../img/icon.png'
-            });
-        });
+
         this.ipc.on('status', (event, msg) => {
-            this.materialize.toast(msg, 5000);
+           this.listenStatus(msg);
         });
     }
 
@@ -83,6 +81,7 @@ class LyricfierRender {
         this.currentView = page;
         $('#mobile-navbar').sideNav('hide');
     }
+
     isView(page) {
         return this.currentView === page;
     }
