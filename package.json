@@ -4,7 +4,7 @@
   "description": "Fetching lyrics for spotify desktop client",
   "main": "main.js",
   "scripts": {
-    "prestart": "tsc",
+    "prestart": "./node_modules/typescript/bin/tsc",
     "start": "electron ."
   },
   "repository": {
@@ -24,9 +24,13 @@
   },
   "homepage": "https://github.com/emilioastarita/lyrics-spotify#readme",
   "devDependencies": {
-    "electron-prebuilt": "^1.2.0"
-  },
-  "dependencies": {
+    "typescript": "^2.0.0",
+    "electron-prebuilt": "^1.2.0",
+    "@types/electron-json-storage": "latest",
+    "@types/electron": "latest",
+    "@types/jquery": "latest",
+    "@types/node": "4.0.30",
+    "@types/vue": "latest",
     "async": "^2.0.1",
     "cheerio": "^0.20.0",
     "electron-json-storage": "^2.0.0",
@@ -36,5 +40,8 @@
     "request": "^2.74.0",
     "vue": "^1.0.26",
     "vue-class-component": "^3.2.0"
+  },
+  "dependencies": {
+
   }
 }

@@ -15,7 +15,7 @@ cd lyricfier
 npm install
 
 # install the typescript compiler globally
-npm install -g typescript
+npm install -g typescript@beta
 ```
 
 ## Run

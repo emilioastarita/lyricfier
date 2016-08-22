@@ -1,7 +1,7 @@
-/// <reference path="../typings/globals/github-electron/index.d.ts" />
-/// <reference path="../typings/globals/jquery/index.d.ts" />
-/// <reference path="../typings/globals/node-4/index.d.ts" />
-/// <reference path="../typings/globals/vue/index.d.ts" />
+/// <reference path="../node_modules/@types/electron/index.d.ts" />
+/// <reference path="../node_modules/@types/jquery/index.d.ts" />
+/// <reference path="../node_modules/@types/node/index.d.ts" />
+/// <reference path="../node_modules/@types/vue/index.d.ts" />
 
 declare let Notification : any;
 
