@@ -102,7 +102,7 @@ export class Lyricfier {
     createTrayMenu() {
         const menu = [
             ['Lyrics', 'showLyrics'],
-            ['Settings', 'showSettings'],
+            // ['Settings', 'showSettings'],
             ['Open Developer Tools', 'openDeveloperTools'],
             ['Quit', 'quit']
         ];
