@@ -58,7 +58,6 @@ export class SettingsRender {
     }
 
     ready() {
-        console.log('Settings ready!');
         this.ipc.send('get-settings');
         this.ipc.on('settings-update', (event, arg) => {
             this.settings = arg;

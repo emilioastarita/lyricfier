@@ -60,7 +60,6 @@ export class SongRender {
     }
 
     ready() {
-        console.log('SongRender ready!');
         this.refresh();
     }
 

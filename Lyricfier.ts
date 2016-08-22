@@ -3,21 +3,16 @@ import electron = require('electron');
 import storage = require('electron-json-storage');
 import BrowserWindow = Electron.BrowserWindow;
 
-
 interface Settings {
-    port:string;
+
 }
-
-
 
 export class Lyricfier {
     protected rootDir = '';
     protected window:Electron.BrowserWindow;
     protected app:Electron.App;
     protected appIcon:Electron.Tray;
-    protected settings:Settings = {
-        port: '4372'
-    };
+    protected settings:Settings = {};
 
     constructor(app, root) {
         this.app = app;
@@ -102,7 +97,6 @@ export class Lyricfier {
     createTrayMenu() {
         const menu = [
             ['Lyrics', 'showLyrics'],
-            // ['Settings', 'showSettings'],
             ['Open Developer Tools', 'openDeveloperTools'],
             ['Quit', 'quit']
         ];
@@ -135,7 +129,6 @@ export class Lyricfier {
             this.window.show();
         }
         if (this.window.isMinimized()) {
-            console.log('restor called');
             this.window.restore();
         }
         if (!this.window.isFocused()) {
