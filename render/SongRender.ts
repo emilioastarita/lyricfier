@@ -30,28 +30,29 @@ import {Searcher} from "./Searcher";
   `
 })
 export class SongRender {
-
     protected song;
     protected shell;
     protected searcher:Searcher;
     protected $dispatch;
     protected timer = null;
+    protected nextCallTime : number;
 
 
     data() {
         return {
             song: null,
-            searcher: new Searcher(this.notifyStatus)
+            searcher: new Searcher(this.notifyStatus),
+            nextCallTime: 5000
         }
     }
 
-    setupTimer() {
+    scheduleNextCall() {
         if (this.timer) {
-            clearInterval(this.timer);
+            clearTimeout(this.timer);
         }
-        this.timer = setInterval(() =>{
+        this.timer = setTimeout(() =>{
             this.refresh();
-        }, 5000);
+        }, this.nextCallTime);
     }
 
     notifyStatus(msg) {
@@ -60,24 +61,19 @@ export class SongRender {
 
     ready() {
         console.log('SongRender ready!');
-        this.setupTimer();
+        this.refresh();
     }
 
     refresh() {
         this.searcher.syncLyrics((song, changed) => {
-            console.log('song sync', song);
-            this.song = {};
-            this.song.title = song.title;
-            this.song.artist = song.artist;
-            this.song.lyric = song.lyric;
-            console.log('updated!');
+            this.song = song;
             if (changed) {
                 new Notification(song.title, {
                     body: `Playing ` + song.title + ` - ` + song.artist,
                     icon: '../img/icon.png'
                 });
             }
-
+            this.scheduleNextCall();
         });
     }
 
