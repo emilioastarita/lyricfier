@@ -1,13 +1,9 @@
 import {SearchLyrics} from "./SearchLyrics";
-let cheerio = require('cheerio')
-let he = require('he');
-
 
 export class MusicMatch extends SearchLyrics {
 
     public search(title:string, artist:string, cb:(error?:any, lyrics?:string)=>void) {
         let url = `https://www.musixmatch.com/search/${encodeURIComponent(artist)} ${encodeURIComponent(title)}`;
-        console.log('MusicMatch', url);
         this.doReq(url, (err, res, body) => {
             if (err || res.statusCode != 200) {
                 return cb('Error response searching music match');
@@ -16,7 +12,6 @@ export class MusicMatch extends SearchLyrics {
                 let firstUrl = /"track_share_url":"([^"]+)"/.exec(body)[1];
                 return this.getSong(firstUrl, cb);
             } catch (e) {
-                console.log('Music match fail ', e);
                 cb('Music match fail');
             }
 
@@ -29,8 +24,8 @@ export class MusicMatch extends SearchLyrics {
         this.doReq(url, (err, res, body) => {
 
             if (err || res.statusCode != 200) {
-                console.log('ERROR: ', err);
-                console.log('response', res);
+                console.log('Err', err);
+                console.log('Res', res);
                 return cb('Error response getting song from wikia');
             }
 

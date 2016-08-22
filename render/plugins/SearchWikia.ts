@@ -25,15 +25,14 @@ export class SearchWikia extends SearchLyrics {
         this.doReq(url, (err, res, body) => {
 
             if (err || res.statusCode != 200) {
-                console.log('ERROR: ', err);
-                console.log('response', res);
+                console.log('Err', err);
+                console.log('Res', res);
                 return cb('Error response getting song from wikia');
             }
             let rawHtml = cheerio.load(body)('.lyricbox').html().replace(/<br>/g, '!NEWLINE!');
             let decodedHtml = he.decode(rawHtml);
             let text = cheerio.load('<div class="lyrics-spotify">' + decodedHtml + '</div>')('.lyrics-spotify').text()
             let lyrics = text.replace(/!NEWLINE!/g, "\n");
-
             return cb(null, lyrics);
         });
     }

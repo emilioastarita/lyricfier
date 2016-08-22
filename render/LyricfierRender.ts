@@ -64,7 +64,6 @@ class LyricfierRender {
     }
 
     ready() {
-        console.log('Loaded....');
         $(".button-collapse").sideNav();
         this.ipc.on('change-view', (event, page) => {
             this.changeView(page);

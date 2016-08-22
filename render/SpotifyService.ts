@@ -71,7 +71,6 @@ export class SpotifyService {
     public needsTokens(fn) {
         this.detectPort((err, ok) => {
             if (err) {
-                console.log('No port found! Is spotify running?');
                 return fn('No port found! Is spotify running?');
             }
             async.parallel({
