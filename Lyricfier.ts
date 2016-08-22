@@ -1,4 +1,4 @@
-///<reference path="typings/index.d.ts"/>
+
 import electron = require('electron');
 import storage = require('electron-json-storage');
 import BrowserWindow = Electron.BrowserWindow;
