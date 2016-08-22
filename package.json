@@ -4,6 +4,7 @@
   "description": "Fetching lyrics for spotify desktop client",
   "main": "main.js",
   "scripts": {
+    "prestart": "tsc",
     "start": "electron ."
   },
   "repository": {

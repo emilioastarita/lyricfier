@@ -2,11 +2,19 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es5",
-    "sourceMap": true
+    "sourceMap": true,
+    "experimentalDecorators": true
   },
   "files": [
     "main",
-    "Lyricfier"
+    "Lyricfier",
+    "render/plugins/MusicMatch",
+    "render/plugins/SearchLyrics",
+    "render/plugins/SearchWikia",
+    "render/Searcher.ts",
+    "render/LyricfierRender.ts",
+    "render/SettingsRender.ts",
+    "render/SongRender.ts"
   ],
   "exclude": [
     "node_modules"

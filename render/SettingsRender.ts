@@ -19,23 +19,7 @@ import Component from 'vue-class-component'
     <h2 class="flow-text">Settings!</h2>
     <hr />
     
-    <div class="row">
-        <div class="input-field col s12">
-            <input placeholder="Token" id="fontSize" type="number" max="30" min="10"  v-model="settings.fontSize">
-            <label for="fontSize" v-bind:class="{ active: settings.fontSize }">Font Size</label>
-            <br />
-        </div>
-    </div>
-    
-    <div class="row">
-        <div class="input-field col s12">
-            <input placeholder="Port" id="port" type="number"    v-model="settings.port">
-            <label for="port" v-bind:class="{ active: settings.port }">Spotify Port</label>
-            <small>This is usually 4372 but you can run <code>netstat -apn | grep spotify</code> to verify.</small>
-            <br />
-        </div>
-    </div>    
-    
+    <p>Some day you will configure the lyricfier email client here, meanwhile there is no settings.</p>    
 
     <div class="row">
         <button class="btn waves-effect waves-light" type="submit" v-on:click="saveSettings">Save</button>
