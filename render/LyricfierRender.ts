@@ -36,7 +36,7 @@ import {SongRender} from './SongRender';
       </nav>
       
       <div class="main-view">
-            <componet :is="currentView" :ipc="ipc"  :shell="shell" v-on:status="listenStatus"></componet>
+            <componet :is="currentView" :ipc="ipc"  :shell="shell" v-on:status="listenStatus" keep-alive></componet>
       </div>
     
   `
@@ -47,8 +47,6 @@ class LyricfierRender {
     protected currentView;
 
     listenStatus(msg) {
-        console.log('this is ', this);
-        console.log('received status', msg);
         Materialize.toast(msg, 5000);
     }
 

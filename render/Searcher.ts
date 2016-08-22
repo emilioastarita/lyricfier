@@ -26,20 +26,17 @@ export class Searcher {
     }
 
     sendStatus(msg) {
-        console.log('called send status', msg);
         this.notifier(msg);
     }
 
     syncLyrics(cb) {
-        this.sendStatus('Getting current song!');
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
                 this.sendStatus('Current song error: ' + err);
                 return;
             }
             if (this.isLastSong(song)) {
-                this.sendStatus('Sending last song');
-                cb(this.lastSongSync);
+                return cb(this.lastSongSync, false);
             }
             this.sendStatus('Current song: ' + song.title);
             this.search(song.title, song.artist, (err, lyric) => {
@@ -50,7 +47,7 @@ export class Searcher {
                 this.sendStatus('Song result!');
                 song.lyric = lyric;
                 this.saveLastSong(song);
-                cb(song);
+                cb(song, true);
             });
         });
     }
