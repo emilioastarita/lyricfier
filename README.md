@@ -11,7 +11,7 @@ git clone git@github.com:emilioastarita/lyricfier.git
 # change dir
 cd lyricfier
 
-# take some coffee and download all the internet
+# take some coffee and download all the internet with npm
 npm install
 
 # install the typescript compiler globally
@@ -30,8 +30,16 @@ We retrieve the current song of spotify client using the spotify built-in web se
 The built-in web server could run in a range of ports starting at 4370. Lyricfier will launch multiple connections hoping find the actual port. 
 You can read a more detailed explanation here: [Deconstructing Spotify's built-in HTTP server](http://cgbystrom.com/articles/deconstructing-spotifys-builtin-http-server/)
 
+## Scraping plugins
+
 You can easily write a new scraping plugin. Just look at the folder `render/plugins` for some inspiration. 
 
+
+## How it looks
+
+Ugly, sorry for that!
+
+![Lyricfier Screenshot](/screenshot.jpg?raw=true "Lyricfier Screenshot")
 
 
 #### License [CC0 (Public Domain)](LICENSE.md)
