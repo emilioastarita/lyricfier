@@ -14,8 +14,6 @@ cd lyricfier
 # take some coffee and download all the internet with npm
 npm install
 
-# install the typescript compiler globally
-npm install -g typescript@beta
 ```
 
 ## Run
