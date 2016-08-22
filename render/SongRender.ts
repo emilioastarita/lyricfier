@@ -1,4 +1,5 @@
 import Component from 'vue-class-component'
+import {Searcher} from "./Searcher";
 
 
 
@@ -13,7 +14,7 @@ import Component from 'vue-class-component'
 
     },
     template: `
-    <a @click="sync" title="Sync current song" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">replay</i></a>
+    <a @click="refresh" title="Sync current song" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">replay</i></a>
     <hr />
     <div v-if="song">
         <h3 class="flow-text">{{song.title}}</h3>  
@@ -31,30 +32,40 @@ import Component from 'vue-class-component'
 export class SongRender {
 
     protected song;
-    protected ipc;
     protected shell;
+    protected searcher:Searcher;
+    protected $dispatch;
 
     data() {
         return {
             song: null,
+            searcher: new Searcher(this.notifyStatus)
         }
+    }
+
+    notifyStatus(msg) {
+        console.log('dispatching status', msg);
+        this.$dispatch('status', msg)
     }
 
     ready() {
         console.log('SongRender ready!');
-        this.ipc.send('get-lyrics');
-        this.ipc.on('song-sync', (event, song) => {
+        this.refresh();
+    }
+
+    refresh() {
+        this.searcher.syncLyrics((song) => {
             console.log('song sync', song);
             this.song = {};
             this.song.title = song.title;
             this.song.artist = song.artist;
             this.song.lyric = song.lyric;
             console.log('updated!');
+            new Notification(song.title, {
+                body: `Playing ` + song.title + ` - ` + song.artist,
+                icon: '../img/icon.png'
+            });
         });
-    }
-
-    sync() {
-        this.ipc.send('get-lyrics');
     }
 
     openExternal(url) {

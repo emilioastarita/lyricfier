@@ -1,30 +1,21 @@
 ///<reference path="typings/index.d.ts"/>
-
 import electron = require('electron');
 import storage = require('electron-json-storage');
-import {SpotifyService} from './SpotifyService';
 import BrowserWindow = Electron.BrowserWindow;
-import {SearchLyrics} from './plugins/SearchLyrics';
-import {SearchWikia} from "./plugins/SearchWikia";
-import {MusicMatch} from "./plugins/MusicMatch";
-const request = require('request');
-const async = require('async');
+
 
 interface Settings {
-    port: string;
+    port:string;
 }
 
-const plugins = [MusicMatch, SearchWikia];
+
 
 export class Lyricfier {
-    protected service:SpotifyService;
-    protected lastSongSync = {};
     protected rootDir = '';
     protected window:Electron.BrowserWindow;
     protected app:Electron.App;
     protected appIcon:Electron.Tray;
-    protected plugins: SearchLyrics[];
-    protected settings : Settings = {
+    protected settings:Settings = {
         port: '4372'
     };
 
@@ -32,43 +23,14 @@ export class Lyricfier {
         this.app = app;
         this.rootDir = root;
         this.setupEvents();
-        storage.get('settings', (err, savedSettings : Settings) => {
+        storage.get('settings', (err, savedSettings:Settings) => {
             if (err) return;
             if (!savedSettings) return;
             this.settings = savedSettings;
         });
-        this.loadPlugins();
+
     }
 
-    loadPlugins() {
-        this.plugins = plugins.map((Plugin) => {
-            return new Plugin(request);
-        });
-    }
-
-    search(title:string, artist:string, cb) {
-        let lyric = null;
-        // run plugins on series
-        // if some returns success getting a lyric
-        // stop and save the lyric result
-        async.detectSeries(this.plugins, (plugin, callback) => {
-            plugin.search(title, artist, (err, result) => {
-                if (!err) {
-                    lyric = result;
-                }
-                callback(err, result)
-            })
-        }, (err) => {
-            cb(err, lyric);
-        });
-    }
-
-    getSpotify() {
-        if (!this.service) {
-            this.service = new SpotifyService(this.settings);
-        }
-        return this.service;
-    }
 
     createWindow() {
         let options = {
@@ -108,9 +70,7 @@ export class Lyricfier {
         electron.ipcMain.on('get-settings', (event) => {
             event.sender.send('settings-update', this.settings);
         });
-        electron.ipcMain.on('get-lyrics', (event) => {
-            this.syncLyrics();
-        });
+
         electron.ipcMain.on('save-settings', (event, newSettings) => {
             let oldSettings = {};
             for (let attr in newSettings) {
@@ -126,7 +86,6 @@ export class Lyricfier {
                 storage.set('settings', this.settings, (err) => {
                     if (err) console.log('Err saving settings', err);
                 });
-                this.service = null;
             }
             event.sender.send('settings-update', this.settings);
         });
@@ -170,45 +129,6 @@ export class Lyricfier {
         this.getOpenWindow().webContents.send('change-view', 'SongLyrics');
     }
 
-    isLastSong(song) {
-        for (let k of Object.keys(song)) {
-            if (song[k] !== this.lastSongSync[k]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    saveLastSong(song) {
-        for (let k of Object.keys(song)) {
-            this.lastSongSync[k] = song[k];
-        }
-    }
-
-    syncLyrics() {
-        this.getOpenWindow().webContents.send('status', 'Getting current song!');
-        this.getSpotify().getCurrentSong((err, song) => {
-            if (err) {
-                this.getOpenWindow().webContents.send('status', 'Current song error: ' + err);
-                return;
-            }
-            if (this.isLastSong(song)) {
-                this.getOpenWindow().webContents.send('status', 'Sending last song');
-                return this.getOpenWindow().webContents.send('song-sync', this.lastSongSync);
-            }
-            this.getOpenWindow().webContents.send('status', 'Current song: ' + song.title);
-            this.search(song.title, song.artist, (err, lyric) => {
-                if (err) {
-                    this.getOpenWindow().webContents.send('status', 'Plugin error: ' + err);
-                    return;
-                }
-                this.getOpenWindow().webContents.send('status', 'Song result!');
-                song.lyric = lyric;
-                this.saveLastSong(song);
-                this.getOpenWindow().webContents.send('song-sync', song);
-            });
-        });
-    }
 
     getOpenWindow() {
         if (!this.window.isVisible()) {
