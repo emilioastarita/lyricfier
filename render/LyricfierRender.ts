@@ -14,18 +14,22 @@ import {SongRender} from './SongRender';
     template: `
       <style>
         body {
-            background-color: #eee;
+            background-color: #fff;
         }
         .main-view {
-            padding: 0px 15px;            
+            padding: 5px 15px;
+            margin-top: 40px;
         } 
         nav {
+            top: 0;
+            position: fixed;
             background-color: #333;
             -webkit-app-region: drag;
         }
         a, ul.side-nav, ul.side-nav li {
             -webkit-app-region: no-drag;
         }
+        
       </style>
       <nav>
             <div class="nav-wrapper ">
