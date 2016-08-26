@@ -21,6 +21,10 @@ import {SongRender} from './SongRender';
         } 
         nav {
             background-color: #333;
+            -webkit-app-region: drag;
+        }
+        a, ul.side-nav, ul.side-nav li {
+            -webkit-app-region: no-drag;
         }
       </style>
       <nav>

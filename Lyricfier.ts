@@ -32,6 +32,7 @@ export class Lyricfier {
             width: 500,
             height: 600,
             icon: this.getImg('icon.png'),
+            frame: false,
             show: false
         };
         this.window = new electron.BrowserWindow(options);
