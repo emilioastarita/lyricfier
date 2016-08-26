@@ -14,8 +14,19 @@ import {Searcher} from "./Searcher";
 
     },
     template: `
-    <a @click="refresh" title="Sync current song" class="btn-floating btn-large waves-effect waves-light red"><i class="material-icons">replay</i></a>
-    <hr />
+     <style>
+        pre {
+            padding: 4px 12px;
+            font-family: 'Merriweather', Georgia, helvetica, arial, sans-serif;
+        }
+        .refresh {
+            position: absolute;
+            top: 10px;
+            right: 5px;
+        }
+     </style>
+    <a @click="refresh"  title="Sync current song" class="btn-floating waves-effect waves-light refresh"><i class="material-icons">replay</i></a>
+
     <div v-if="song">
         <h3 class="flow-text">{{song.title}}</h3>  
         <h4 class="flow-text">{{song.artist}}</h4>  

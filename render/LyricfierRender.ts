@@ -13,9 +13,15 @@ import {SongRender} from './SongRender';
     },
     template: `
       <style>
-         .main-view {
-            padding: 15px;            
-         }   
+        body {
+            background-color: #eee;
+        }
+        .main-view {
+            padding: 0px 15px;            
+        } 
+        nav {
+            background-color: #333;
+        }
       </style>
       <nav>
             <div class="nav-wrapper ">
