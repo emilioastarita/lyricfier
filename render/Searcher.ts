@@ -53,7 +53,7 @@ export class Searcher {
     }
 
     isLastSong(song) {
-        for (let k of Object.keys(song)) {
+        for (let k of ['artist', 'title']) {
             if (song[k] !== this.lastSongSync[k]) {
                 return false;
             }
