@@ -35,9 +35,13 @@ You can easily write a new scraping plugin. Just look at the folder `render/plug
 
 ## How it looks
 
-Ugly, sorry for that!
+
 
 ![Lyricfier Screenshot](/screenshot.jpg?raw=true "Lyricfier Screenshot")
 
+## Collaborators
+
+Idea: @fedeisas
+UI & Design: @silvestreh 
 
 #### License [CC0 (Public Domain)](LICENSE.md)
