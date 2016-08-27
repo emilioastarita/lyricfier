@@ -4,10 +4,10 @@
   "description": "Fetching lyrics for spotify desktop client",
   "main": "main.js",
   "scripts": {
-    "prestart": "./node_modules/typescript/bin/tsc",
+    "prestart": "tsc",
     "start": "electron .",
-    "predist": "./node_modules/typescript/bin/tsc",
-    "dist": "./node_modules/electron-zip-packager/bin/cmd.js  . --all --overwrite --out=build/"
+    "predist": "tsc",
+    "dist": "electron-zip-packager  . --all --overwrite --out=build/"
   },
   "repository": {
     "type": "git",
