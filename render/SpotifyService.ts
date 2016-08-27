@@ -117,13 +117,36 @@ export class SpotifyService {
         });
     }
 
+    public pause(pause:boolean, cb) {
+        this.needsTokens((err, tokens) => {
+            if (err) return cb(err);
+            let params = {
+                'oauth': tokens.oauth,
+                'csrf': tokens.csrf,
+                'pause': pause ? 'true' : 'false',
+            };
+            let url = this.url('/remote/pause.json') + '?' + this.encodeData(params);
+            request(url, {
+                headers: this.headers(),
+                'rejectUnauthorized': false,
+            }, (err, status, body) => {
+                if (err) {
+                    return cb(err);
+                }
+                let json = JSON.parse(body);
+                cb(null, json);
+            });
+        });
+
+    }
+
     public getCurrentSong(cb) {
         this.getStatus((err, status)=> {
-
             if (err) return cb(err);
             if (status.track) {
                 return this.getAlbumImages(status.track.album_resource.uri, (err, images) => {
                     return cb(null, {
+                        playing: status.playing,
                         artist: status.track.artist_resource.name,
                         title: status.track.track_resource.name,
                         album: {
