@@ -5,55 +5,14 @@ import Component from 'vue-class-component';
 import {ipcRenderer, shell}  from 'electron';
 import {SettingsRender} from './SettingsRender';
 import {SongRender} from './SongRender';
+import {template} from './template';
 
 @Component({
     components: {
         'SettingsRender': SettingsRender,
         'SongRender': SongRender
     },
-    template: `
-      <style>
-        body {
-            background-color: #fff;
-        }
-        .main-view {
-            padding: 5px 15px;
-            margin-top: 40px;
-        } 
-        nav {
-            top: 0;
-            position: fixed;
-            background-color: #333;
-            -webkit-app-region: drag;
-        }
-        a, ul.side-nav, ul.side-nav li {
-            -webkit-app-region: no-drag;
-        }
-        
-      </style>
-      <nav>
-            <div class="nav-wrapper ">
-              <a class="button-collapse" data-activates="mobile-navbar" href="#">
-                <i class="material-icons">menu</i>
-              </a>
-              <ul class="left hide-on-med-and-down" id="nav-mobile">
-                <li v-for="page in menu" v-bind:class="{ 'active': isView(page) }">
-                    <a href="#" v-on:click="changeView(page)">{{page}}</a>
-                </li>
-              </ul>
-              <ul class="side-nav" id="mobile-navbar" >
-                <li v-for="page in menu" v-bind:class="{ 'active': isView(page) }">
-                    <a href="#" v-on:click="changeView(page)">{{page}}</a>
-                </li>
-              </ul>      
-            </div>
-      </nav>
-      
-      <div class="main-view">
-            <componet :is="currentView" :ipc="ipc"  :shell="shell" v-on:status="listenStatus" keep-alive></componet>
-      </div>
-    
-  `
+    template: template('lyricfier')
 })
 class LyricfierRender {
     protected materialize;
