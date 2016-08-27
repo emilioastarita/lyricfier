@@ -39,14 +39,16 @@ export class SpotifyService {
 
     public detectPort(cb) {
         async.retry(this.portTries, (finish) => {
-                this.getCsrfToken((err, token) => {
-                    if (err) {
-                        this.port++;
-                        console.log('TRYING WITH PORT: ', this.port)
-                    }
-                    finish(err, token)
-                });
-            }, cb);
+            this.getCsrfToken((err, token) => {
+                if (err) {
+                    this.port++;
+                    console.log('TRYING WITH PORT: ', this.port)
+                    return finish(err);
+                }
+                console.log('VALID PORT', this.port);
+                finish(err, token)
+            });
+        }, cb);
     }
 
 
@@ -102,14 +104,35 @@ export class SpotifyService {
         });
     }
 
+    protected getAlbumImages(albumUri:string, cb) {
+        let id = albumUri.split('spotify:album:')[1];
+        let url = `https://api.spotify.com/v1/albums/${id}?oauth=${this.oAuthToken.t}`;
+
+        request(url, (err, status, body) => {
+            if (err) {
+                return cb(err, null)
+            }
+            let parsed = JSON.parse(body);
+            cb(null, parsed.images);
+        });
+    }
+
     public getCurrentSong(cb) {
-        this.getStatus((err, status)=>{
+        this.getStatus((err, status)=> {
+
             if (err) return cb(err);
             if (status.track) {
-                return cb(null, {
-                    artist: status.track.artist_resource.name ,
-                    title: status.track.track_resource.name
+                return this.getAlbumImages(status.track.album_resource.uri, (err, images) => {
+                    return cb(null, {
+                        artist: status.track.artist_resource.name,
+                        title: status.track.track_resource.name,
+                        album: {
+                            name: status.track.album_resource.name,
+                            images: images
+                        }
+                    })
                 })
+
             }
             return cb('No song', null)
         });
@@ -122,4 +145,3 @@ export class SpotifyService {
     }
 
 }
-
