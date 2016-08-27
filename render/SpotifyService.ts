@@ -23,7 +23,7 @@ export class SpotifyService {
     }
 
     protected url(u:string) {
-        return `https://${this.subDomain()}.spotilocal.com:${this.port}${u}`;
+        return `https://127.0.0.1:${this.port}${u}`;
     }
 
     public getOAuthToken(cb) {

@@ -9,10 +9,10 @@ import {template} from './template';
 
 @Component({
     components: {
-        'SettingsRender': SettingsRender,
-        'SongRender': SongRender
+        SettingsRender,
+        SongRender
     },
-    template: template('lyricfier')
+    template: template('Lyricfier')
 })
 class LyricfierRender {
     protected materialize;
@@ -22,7 +22,6 @@ class LyricfierRender {
     listenStatus(msg) {
         Materialize.toast(msg, 5000);
     }
-
 
     data() {
         return {
@@ -43,7 +42,7 @@ class LyricfierRender {
         });
 
         this.ipc.on('status', (event, msg) => {
-           this.listenStatus(msg);
+            this.listenStatus(msg);
         });
     }
 
@@ -55,7 +54,6 @@ class LyricfierRender {
     isView(page) {
         return this.currentView === page;
     }
-
 }
 
 export = LyricfierRender;
