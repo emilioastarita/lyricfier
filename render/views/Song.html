@@ -1,0 +1,51 @@
+<style>
+    :root {
+        font-size: 16px;
+    }
+
+    pre {
+        font-family: 'Merriweather', Georgia, helvetica, arial, sans-serif;
+    }
+
+    .refresh {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+    }
+
+    header {
+        background: #FAFAFA;
+        margin: -16px -16px 16px;
+        padding: 16px;
+        border-bottom: 1px solid #F2F2F2;
+    }
+
+    header h3.flow-text {
+        margin-top: 0;
+        margin-bottom: 0.25em;
+        font-size: 2em;
+    }
+
+    header h4.flow-text {
+        color: #999;
+        font-size: 1.125em;
+        margin: 0;
+    }
+
+    .lyrics {
+        white-space: pre;
+    }
+</style>
+
+<a @click="refresh" title="Sync current song" class="btn-floating waves-effect waves-light refresh"><i class="material-icons">replay</i></a>
+
+<div v-if="song">
+    <header>
+        <h3 class="flow-text">{{song.title}}</h3>
+        <h4 class="flow-text">{{song.artist}}</h4>
+    </header>
+    <div class="lyrics">{{song.lyric}}</div>
+</div>
+<div v-else>
+    <h3 class="flow-text">Play a song on spotify!</h3>
+</div>
