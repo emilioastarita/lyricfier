@@ -7,7 +7,7 @@
     "prestart": "tsc",
     "start": "electron .",
     "predist": "tsc",
-    "dist": "electron-zip-packager  . --all --overwrite --out=build/"
+    "dist": "electron-zip-packager  . --all --overwrite --prune --out=build/"
   },
   "repository": {
     "type": "git",
@@ -25,28 +25,29 @@
     "url": "https://github.com/emilioastarita/lyrics-spotify/issues"
   },
   "homepage": "https://github.com/emilioastarita/lyrics-spotify#readme",
+  "dependencies": {
+    "async": "^2.0.1",
+    "cheerio": "^0.20.0",
+    "electron-json-storage": "^2.0.0",
+    "he": "^1.1.0",
+    "jquery": "^3.1.0",
+    "request": "^2.74.0",
+    "toastr": "^2.1.2",
+    "vue-class-component": "^3.2.0",
+    "vue": "^1.0.26"
+  },
   "devDependencies": {
     "@types/electron": "latest",
     "@types/electron-json-storage": "latest",
     "@types/jquery": "latest",
     "@types/node": "4.0.30",
     "@types/vue": "latest",
-    "async": "^2.0.1",
-    "cheerio": "^0.20.0",
-    "electron-json-storage": "^2.0.0",
     "electron-packager": "^7.7.0",
     "electron-prebuilt": "^1.2.0",
     "electron-zip-packager": "^3.0.0",
     "gulp": "^3.9.1",
     "gulp-less": "^3.1.0",
     "gulp-livereload": "^3.8.1",
-    "he": "^1.1.0",
-    "jquery": "^3.1.0",
-    "request": "^2.74.0",
-    "toastr": "^2.1.2",
-    "typescript": "^2.0.0",
-    "vue": "^1.0.26",
-    "vue-class-component": "^3.2.0"
-  },
-  "dependencies": {}
+    "typescript": "^2.0.0"
+  }
 }
