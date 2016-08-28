@@ -6,6 +6,7 @@
     "experimentalDecorators": true
   },
   "files": [
+    "gulpfile",
     "main",
     "Lyricfier",
     "render/plugins/MusicMatch",

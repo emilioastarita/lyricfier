@@ -1,4 +1,3 @@
-
 import electron = require('electron');
 import storage = require('electron-json-storage');
 import BrowserWindow = Electron.BrowserWindow;
@@ -9,23 +8,21 @@ interface Settings {
 
 export class Lyricfier {
     protected rootDir = '';
-    protected window:Electron.BrowserWindow;
-    protected app:Electron.App;
-    protected appIcon:Electron.Tray;
-    protected settings:Settings = {};
+    protected window: Electron.BrowserWindow;
+    protected app: Electron.App;
+    protected appIcon: Electron.Tray;
+    protected settings: Settings = {};
 
     constructor(app, root) {
         this.app = app;
         this.rootDir = root;
         this.setupEvents();
-        storage.get('settings', (err, savedSettings:Settings) => {
+        storage.get('settings', (err, savedSettings: Settings) => {
             if (err) return;
             if (!savedSettings) return;
             this.settings = savedSettings;
         });
-
     }
-
 
     createWindow() {
         let options = {
@@ -48,7 +45,7 @@ export class Lyricfier {
         return this.window;
     }
 
-    getWindow():Electron.BrowserWindow {
+    getWindow(): Electron.BrowserWindow {
         return this.window;
     }
 
@@ -124,7 +121,6 @@ export class Lyricfier {
         this.getOpenWindow().webContents.send('change-view', 'SongLyrics');
     }
 
-
     getOpenWindow() {
         if (!this.window.isVisible()) {
             this.window.show();
@@ -137,7 +133,6 @@ export class Lyricfier {
         }
         return this.window;
     }
-
 
     openDeveloperTools() {
         return this.getOpenWindow().webContents.openDevTools();
