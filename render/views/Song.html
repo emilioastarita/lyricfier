@@ -1,51 +1,20 @@
-<style>
-    :root {
-        font-size: 16px;
-    }
+<a href="#" v-if="song" @click.prevent="refresh" title="Sync current song" class="refresh">
+    <i class="material-icons">replay</i>
+</a>
 
-    pre {
-        font-family: 'Merriweather', Georgia, helvetica, arial, sans-serif;
-    }
-
-    .refresh {
-        position: fixed;
-        top: 10px;
-        right: 10px;
-    }
-
-    header {
-        background: #FAFAFA;
-        margin: -16px -16px 16px;
-        padding: 16px;
-        border-bottom: 1px solid #F2F2F2;
-    }
-
-    header h3.flow-text {
-        margin-top: 0;
-        margin-bottom: 0.25em;
-        font-size: 2em;
-    }
-
-    header h4.flow-text {
-        color: #999;
-        font-size: 1.125em;
-        margin: 0;
-    }
-
-    .lyrics {
-        white-space: pre;
-    }
-</style>
-
-<a @click="refresh" title="Sync current song" class="btn-floating waves-effect waves-light refresh"><i class="material-icons">replay</i></a>
-
-<div v-if="song">
-    <header>
-        <h3 class="flow-text">{{song.title}}</h3>
-        <h4 class="flow-text">{{song.artist}}</h4>
+<div v-if="song" class="lyric-view">
+    <header class="header">
+        <span class="header__background" :style="{ backgroundImage: 'url(' + song.album.images[0].url + ')' }"></span>
+        <img class="header__album-art" :src="song.album.images[0].url" alt="Album Art">
+        <h3>{{ song.title }}</h3>
+        <h4>{{ song.artist }}</h4>
     </header>
-    <div class="lyrics">{{song.lyric}}</div>
+    <div class="lyrics">{{ song.lyric }}</div>
 </div>
-<div v-else>
-    <h3 class="flow-text">Play a song on spotify!</h3>
+
+<div v-else class="not-playing-view">
+    <img src="../img/waves.svg" alt="Waveform">
+    <h3>Play a song on Spotify</h3>
+    <p>Looks like you're not listening to music right now. Is Spotify runnig?</p>
+    <a href="#" @click.prevent="refresh" class="button">Retry</a>
 </div>

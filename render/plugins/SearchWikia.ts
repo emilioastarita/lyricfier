@@ -2,10 +2,8 @@ import {SearchLyrics} from "./SearchLyrics";
 let cheerio = require('cheerio')
 let he = require('he');
 
-
 export class SearchWikia extends SearchLyrics {
-
-    public search(title:string, artist:string, cb:(error?:any, lyrics?:string)=>void) {
+    public search(title: string, artist: string, cb: (error?: any, lyrics?: string) => void) {
         let url = `http://lyrics.wikia.com/api.php?action=lyrics&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(title)}&fmt=json&func=getSong`;
 
         this.doReq(url, (err, res, body) => {
@@ -36,6 +34,4 @@ export class SearchWikia extends SearchLyrics {
             return cb(null, lyrics);
         });
     }
-
 }
-

@@ -1,11 +1,13 @@
 /// <reference path="./render-typings.d.ts" />
 
-declare const Materialize;
 import Component from 'vue-class-component';
 import {ipcRenderer, shell}  from 'electron';
 import {SettingsRender} from './SettingsRender';
 import {SongRender} from './SongRender';
 import {template} from './template';
+const toastr = require('toastr');
+toastr.options.positionClass = 'toast-bottom-left';
+toastr.options.timeout = '60000';
 
 @Component({
     components: {
@@ -15,12 +17,11 @@ import {template} from './template';
     template: template('Lyricfier')
 })
 class LyricfierRender {
-    protected materialize;
     protected ipc;
     protected currentView;
 
     listenStatus(msg) {
-        Materialize.toast(msg, 5000);
+        toastr.info(msg);
     }
 
     data() {
@@ -36,7 +37,6 @@ class LyricfierRender {
     }
 
     ready() {
-        $(".button-collapse").sideNav();
         this.ipc.on('change-view', (event, page) => {
             this.changeView(page);
         });
@@ -48,7 +48,6 @@ class LyricfierRender {
 
     changeView(page) {
         this.currentView = page;
-        $('#mobile-navbar').sideNav('hide');
     }
 
     isView(page) {

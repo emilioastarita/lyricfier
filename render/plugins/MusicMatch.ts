@@ -1,8 +1,7 @@
 import {SearchLyrics} from "./SearchLyrics";
 
 export class MusicMatch extends SearchLyrics {
-
-    public search(title:string, artist:string, cb:(error?:any, lyrics?:string)=>void) {
+    public search(title: string, artist: string, cb: (error?: any, lyrics?: string) => void) {
         let url = `https://www.musixmatch.com/search/${encodeURIComponent(artist)} ${encodeURIComponent(title)}`;
         this.doReq(url, (err, res, body) => {
             if (err || res.statusCode != 200) {
@@ -14,13 +13,10 @@ export class MusicMatch extends SearchLyrics {
             } catch (e) {
                 cb('Music match fail');
             }
-
-
         });
     }
 
     protected getSong(url, cb) {
-
         this.doReq(url, (err, res, body) => {
 
             if (err || res.statusCode != 200) {
@@ -37,6 +33,4 @@ export class MusicMatch extends SearchLyrics {
             }
         });
     }
-
 }
-
