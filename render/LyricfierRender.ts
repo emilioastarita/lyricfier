@@ -19,6 +19,7 @@ toastr.options.timeout = '60000';
 class LyricfierRender {
     protected ipc;
     protected currentView;
+    protected liveReload = false;
 
     listenStatus(msg) {
         toastr.info(msg);
@@ -32,6 +33,7 @@ class LyricfierRender {
             ],
             ipc: ipcRenderer,
             shell: shell,
+            liveReload: false,
             'currentView': 'SongRender'
         }
     }
@@ -39,6 +41,10 @@ class LyricfierRender {
     ready() {
         this.ipc.on('change-view', (event, page) => {
             this.changeView(page);
+        });
+
+        this.ipc.on('live-reload', (event, status) => {
+            this.liveReload = status;
         });
 
         this.ipc.on('status', (event, msg) => {

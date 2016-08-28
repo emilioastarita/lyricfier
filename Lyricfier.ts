@@ -135,6 +135,7 @@ export class Lyricfier {
     }
 
     openDeveloperTools() {
+        this.getOpenWindow().webContents.send('live-reload', true);
         return this.getOpenWindow().webContents.openDevTools();
     }
 }
