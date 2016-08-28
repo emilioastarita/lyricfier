@@ -2,6 +2,10 @@
 
 Lyricfier is an electron app that communicates  with Spotify Desktop Client to get the current song and then looks for a matching lyric scraping the web.
 
+## How it looks
+
+![Lyricfier Screenshot](/screenshot.jpg?raw=true "Lyricfier Screenshot")
+
 ## Install 
 
 ```
@@ -33,11 +37,7 @@ You can read a more detailed explanation here: [Deconstructing Spotify's built-i
 You can easily write a new scraping plugin. Just look at the folder `render/plugins` for some inspiration. 
 
 
-## How it looks
 
-
-
-![Lyricfier Screenshot](/screenshot.jpg?raw=true "Lyricfier Screenshot")
 
 ## Collaborators
 
