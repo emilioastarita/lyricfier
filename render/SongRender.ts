@@ -53,7 +53,8 @@ export class SongRender {
             if (changed) {
                 new Notification(song.title, {
                     body: `Playing ` + song.title + ` - ` + song.artist,
-                    icon: '../img/icon.png'
+                    icon: '../img/icon.png',
+                    silent: true
                 });
             }
             this.scheduleNextCall();
