@@ -1,6 +1,9 @@
 import electron = require('electron');
 import storage = require('electron-json-storage');
 import BrowserWindow = Electron.BrowserWindow;
+const platform = require('os').platform();
+const path = require('path');
+
 
 interface Settings {
 
@@ -24,11 +27,24 @@ export class Lyricfier {
         });
     }
 
+    getTrayIcon() {
+
+        let trayImage = this.getImg('icon.png');
+        // Determine appropriate icon for platform
+        if (platform == 'darwin') {
+            trayImage = this.getImg('tray-icon-mac.png');
+        }
+        else if (platform == 'win32') {
+            trayImage = this.getImg('tray-icon-win.ico');
+        }
+        return trayImage;
+    }
+
     createWindow() {
         let options = {
             width: 500,
             height: 600,
-            icon: this.getImg('icon.png'),
+            icon: this.getTrayIcon(),
             frame: false,
             show: false
         };
@@ -50,7 +66,7 @@ export class Lyricfier {
     }
 
     createAppIcon() {
-        const iconPath = this.getImg('icon.png');
+        const iconPath = this.getTrayIcon();
         this.appIcon = new electron.Tray(iconPath);
         this.appIcon.setContextMenu(this.createTrayMenu());
     }
@@ -85,7 +101,7 @@ export class Lyricfier {
     }
 
     getImg(name) {
-        return `/${this.rootDir}/render/img/${name}`;
+        return path.join(this.rootDir, 'render', 'img', name );
     }
 
     getView(name) {

@@ -6,8 +6,13 @@
   "scripts": {
     "prestart": "tsc",
     "start": "electron .",
+    "dist:linux64": "electron-zip-packager  . --arch=x64 --platform=linux  --overwrite --prune --out=build/ --icon=render/img/icon.png",
+    "dist:linux32": "electron-zip-packager  . --arch=ia32 --platform=linux  --overwrite --prune --out=build/ --icon=render/img/icon.png",
+    "dist:win32": "electron-zip-packager  . --arch=ia32 --platform=win32  --overwrite --prune --out=build/ --icon=render/img/icon.ico",
+    "dist:win64": "electron-zip-packager  . --arch=x64 --platform=win32  --overwrite --prune --out=build/ --icon=render/img/icon.ico",
+    "dist:mac": "electron-zip-packager  . --arch=x64 --platform=mas  --overwrite --prune --out=build/ --icon=render/img/icon.icns",
     "predist": "tsc",
-    "dist": "electron-zip-packager  . --all --overwrite --prune --out=build/"
+    "dist": "npm run dist:linux64 && npm run dist:linux32 && npm run dist:win32 && npm run dist:win64 && npm run dist:mac"
   },
   "repository": {
     "type": "git",
@@ -30,16 +35,18 @@
     "cheerio": "^0.20.0",
     "electron-json-storage": "^2.0.0",
     "he": "^1.1.0",
+    "jquery": "^3.1.0",
     "request": "^2.74.0",
     "toastr": "^2.1.2",
-    "vue-class-component": "^3.2.0",
-    "vue": "^1.0.26"
+    "vue": "^1.0.26",
+    "vue-class-component": "^3.2.0"
   },
   "devDependencies": {
     "@types/electron": "latest",
     "@types/electron-json-storage": "latest",
     "@types/node": "4.0.30",
     "@types/vue": "latest",
+    "electron-builder": "^6.4.0",
     "electron-packager": "^7.7.0",
     "electron-prebuilt": "^1.2.0",
     "electron-zip-packager": "^3.0.0",
