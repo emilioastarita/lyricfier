@@ -4,8 +4,15 @@
 
 <div v-if="song" class="lyric-view">
     <header class="header">
-        <span class="header__background" :style="{ backgroundImage: 'url(' + song.album.images[0].url + ')' }"></span>
-        <img class="header__album-art" :src="song.album.images[0].url" alt="Album Art">
+
+        <!-- if we have images !-->
+        <span v-if="song.album.images" class="header__background" :style="{ backgroundImage: 'url(' + song.album.images[0].url + ')' }"></span>
+        <img  v-if="song.album.images" class="header__album-art" :src="song.album.images[0].url" alt="{{song.album.name}}">
+
+        <!-- showing default logo !-->
+        <span v-if="song.album.images == null" class="header__background" style="background-image: url(../img/icon.png);"></span>
+        <img  v-if="song.album.images == null" class="header__album-art" style="padding: 5px; box-sizing: border-box;" src="../img/icon.png" alt="{{song.album.name}}">
+
         <h3>{{ song.title }}</h3>
         <h4>{{ song.artist }}</h4>
     </header>
@@ -14,7 +21,7 @@
 
 <div v-else class="not-playing-view">
     <img src="../img/waves.svg" alt="Waveform">
-    <h3>Play a song on Spotify</h3>
-    <p>Looks like you're not listening to music right now. Is Spotify runnig?</p>
-    <a href="#" @click.prevent="refresh" class="button">Retry</a>
+    <h3>Looking for a Song on Spotify</h3>
+    <p>Is Spotify runnig?</p>
+    <a href="#" @click.prevent="refresh" class="button">Try Again</a>
 </div>

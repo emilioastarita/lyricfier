@@ -4,7 +4,7 @@ import {MusicMatch} from "./plugins/MusicMatch";
 import {SpotifyService} from './SpotifyService';
 const async = require('async');
 const plugins = [MusicMatch, SearchWikia];
-const request = require('request');
+const request = require('request').defaults({timeout: 5000});
 
 export class Searcher {
 
@@ -30,14 +30,17 @@ export class Searcher {
     }
 
     syncLyrics(cb) {
+        console.log('sync lyrics called');
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
                 this.sendStatus('Current song error: ' + err);
-                return;
+                return cb(true);
             }
             if (this.isLastSong(song)) {
-                return cb(this.lastSongSync, false);
+                console.log('is last song nothing to do here');
+                return cb(null, this.lastSongSync, false);
             }
+            console.log('is not last song searching by title and artist');
             this.sendStatus('Current song: ' + song.title);
             this.search(song.title, song.artist, (err, lyric) => {
                 if (err) {
@@ -47,7 +50,7 @@ export class Searcher {
                 this.sendStatus('Song result!');
                 song.lyric = lyric;
                 this.saveLastSong(song);
-                cb(song, true);
+                cb(null, song, true);
             });
         });
     }
@@ -77,7 +80,7 @@ export class Searcher {
                 if (!err) {
                     lyric = result;
                 }
-                callback(err, result)
+                callback(null, result)
             })
         }, (err) => {
             cb(err, lyric);
