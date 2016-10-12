@@ -1,7 +1,7 @@
 export class SearchLyrics {
     protected req;
 
-    public constructor(req) {
+    public constructor(req = null) {
         this.req = req;
     }
 
