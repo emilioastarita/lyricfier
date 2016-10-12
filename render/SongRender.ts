@@ -34,6 +34,7 @@ export class SongRender {
         if (this.timer) {
             clearTimeout(this.timer);
         }
+        console.warn('Scheduling ', this.nextCallTime / 1000 , ' seconds');
         this.timer = setTimeout(() => {
             this.refresh();
         }, this.nextCallTime);
@@ -48,15 +49,11 @@ export class SongRender {
     }
 
     refresh() {
-        this.searcher.syncLyrics((song, changed) => {
-            this.song = song;
-            if (changed) {
-                new Notification(song.title, {
-                    body: `Playing ` + song.title + ` - ` + song.artist,
-                    icon: '../img/icon.png',
-                    silent: true
-                });
+        this.searcher.syncLyrics((error, song, changed) => {
+            if (!error && changed) {
+                this.song = song;
             }
+
             this.scheduleNextCall();
         });
     }

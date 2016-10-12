@@ -1,9 +1,11 @@
-const request = require('request');
+const request = require('request').defaults({timeout: 5000});
 const async = require('async');
+const initialPortTest = 4370;
 
 export class SpotifyService {
 
-    protected port = 4370;
+    protected foundPort  = false;
+    protected port : number;
     protected portTries = 15;
 
     protected oAuthToken = {
@@ -31,20 +33,31 @@ export class SpotifyService {
             return cb(null, this.oAuthToken.t);
         }
         request.get('https://open.spotify.com/token', (err, status, body) => {
-            let json = JSON.parse(body);
-            this.oAuthToken.t = json.t;
-            return cb(null, json.t);
+            if (err) {
+                return cb(err);
+            }
+            try {
+                let json = JSON.parse(body);
+                this.oAuthToken.t = json.t;
+                return cb(null, json.t);
+            } catch(e) {
+                return cb(e);
+            }
         });
     }
 
     public detectPort(cb) {
+        if (!this.foundPort) {
+            this.port = initialPortTest;
+        }
         async.retry(this.portTries, (finish) => {
             this.getCsrfToken((err, token) => {
                 if (err) {
+                    console.log('FAILED WITH PORT: ', this.port)
                     this.port++;
-                    console.log('TRYING WITH PORT: ', this.port)
                     return finish(err);
                 }
+                this.foundPort = true;
                 console.log('VALID PORT', this.port);
                 finish(err, token)
             });
@@ -91,10 +104,12 @@ export class SpotifyService {
                 'csrf': tokens.csrf,
             };
             let url = this.url('/remote/status.json') + '?' + this.encodeData(params);
+
             request(url, {
                 headers: this.headers(),
                 'rejectUnauthorized': false,
             }, (err, status, body) => {
+
                 if (err) {
                     return cb(err);
                 }
@@ -105,16 +120,20 @@ export class SpotifyService {
     }
 
     protected getAlbumImages(albumUri:string, cb) {
-        let id = albumUri.split('spotify:album:')[1];
-        let url = `https://api.spotify.com/v1/albums/${id}?oauth=${this.oAuthToken.t}`;
 
-        request(url, (err, status, body) => {
-            if (err) {
-                return cb(err, null)
-            }
-            let parsed = JSON.parse(body);
-            cb(null, parsed.images);
-        });
+        async.retry(2, (finish) => {
+            let id = albumUri.split('spotify:album:')[1];
+            let url = `https://api.spotify.com/v1/albums/${id}?oauth=${this.oAuthToken.t}`;
+            request(url, (err, status, body) => {
+                if (err) {
+                    return finish(err, null)
+                }
+                let parsed = JSON.parse(body);
+                finish(null, parsed.images);
+            });
+        }, cb);
+
+
     }
 
     public pause(pause:boolean, cb) {
@@ -143,18 +162,29 @@ export class SpotifyService {
     public getCurrentSong(cb) {
         this.getStatus((err, status)=> {
             if (err) return cb(err);
-            if (status.track) {
-                return this.getAlbumImages(status.track.album_resource.uri, (err, images) => {
-                    return cb(null, {
-                        playing: status.playing,
-                        artist: status.track.artist_resource.name,
-                        title: status.track.track_resource.name,
-                        album: {
-                            name: status.track.album_resource.name,
-                            images: images
+            if (status.track && status.track.track_resource) {
+
+                let result = {
+                    playing: status.playing,
+                    artist: status.track.artist_resource ? status.track.artist_resource.name : 'Unknown',
+                    title: status.track.track_resource.name,
+                    album: {
+                        name: 'Unknown',
+                        images: null
+                    }
+                };
+
+                if (status.track.album_resource) {
+                    result.album.name = status.track.album_resource.name;
+                    return this.getAlbumImages(status.track.album_resource.uri, (err, images) => {
+                        if (!err) {
+                            result.album.images = images;
                         }
-                    })
-                })
+                        return cb(null, result);
+                    });
+                } else {
+                    return cb(null, result);
+                }
 
             }
             return cb('No song', null)
