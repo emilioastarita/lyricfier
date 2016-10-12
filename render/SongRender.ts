@@ -52,8 +52,10 @@ export class SongRender {
         this.searcher.syncLyrics((error, song, changed) => {
             if (!error && changed) {
                 this.song = song;
+                this['$nextTick'](() => {
+                    document.getElementById("lyricBox").scrollTop = 0;
+                })
             }
-
             this.scheduleNextCall();
         });
     }
