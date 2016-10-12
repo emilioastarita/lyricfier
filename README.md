@@ -4,7 +4,7 @@ Lyricfier is an electron app that communicates  with Spotify Desktop Client to g
 
 ## Download pre-release
 
-Go to [Lyricfier releases page](https://github.com/emilioastarita/lyricfier/releases/tag/0.1.0) and download the zip file for your platform.
+Go to [Lyricfier releases page](https://github.com/emilioastarita/lyricfier/releases) and download the zip file for your platform.
 
 
 ## How it looks
