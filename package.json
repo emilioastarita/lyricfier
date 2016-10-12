@@ -12,7 +12,9 @@
     "dist:win64": "electron-zip-packager  . --arch=x64 --platform=win32  --overwrite --prune --out=build/ --icon=render/img/icon.ico",
     "dist:mac": "electron-zip-packager  . --arch=x64 --platform=mas  --overwrite --prune --out=build/ --icon=render/img/icon.icns",
     "predist": "tsc",
-    "dist": "npm run dist:linux64 && npm run dist:linux32 && npm run dist:win32 && npm run dist:win64 && npm run dist:mac"
+    "dist": "npm run dist:linux64 && npm run dist:linux32 && npm run dist:win32 && npm run dist:win64 && npm run dist:mac",
+    "pretest": "tsc test/*Test.ts --module commonjs && tsc",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -46,6 +48,7 @@
     "@types/electron-json-storage": "latest",
     "@types/node": "4.0.30",
     "@types/vue": "latest",
+    "@types/mocha": "latest",
     "electron-builder": "^6.4.0",
     "electron-packager": "^7.7.0",
     "electron-prebuilt": "^1.2.0",
