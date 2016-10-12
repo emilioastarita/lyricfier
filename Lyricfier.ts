@@ -6,7 +6,7 @@ const path = require('path');
 
 
 interface Settings {
-
+    alwaysOnTop: boolean;
 }
 
 export class Lyricfier {
@@ -14,21 +14,25 @@ export class Lyricfier {
     protected window: Electron.BrowserWindow;
     protected app: Electron.App;
     protected appIcon: Electron.Tray;
-    protected settings: Settings = {};
+    protected settings: Settings = {
+        alwaysOnTop: false
+    };
 
     constructor(app, root) {
         this.app = app;
         this.rootDir = root;
-        this.setupEvents();
         storage.get('settings', (err, savedSettings: Settings) => {
-            if (err) return;
-            if (!savedSettings) return;
+            if (err) savedSettings = <Settings>{};
+            if (('alwaysOnTop' in savedSettings) === false) {
+                savedSettings['alwaysOnTop'] = this.settings.alwaysOnTop;
+            }
             this.settings = savedSettings;
+            this.alwaysOnTopSetup();
         });
+        this.setupEvents();
     }
 
     getTrayIcon() {
-
         let trayImage = this.getImg('icon.png');
         // Determine appropriate icon for platform
         if (platform == 'darwin') {
@@ -108,9 +112,24 @@ export class Lyricfier {
         return `file://${this.rootDir}/render/views/${name}.html`;
     }
 
+    alwaysOnTopSetup() {
+        this.getWindow().setAlwaysOnTop(this.settings.alwaysOnTop)
+        this.appIcon.setContextMenu(this.createTrayMenu());
+    }
+
+    alwaysOnTopToggle() {
+        this.settings.alwaysOnTop = !this.settings.alwaysOnTop;
+        storage.set('settings', this.settings, (err) => {
+            if (err) console.log('Err saving settings', err);
+        });
+        this.alwaysOnTopSetup();
+    }
+
     createTrayMenu() {
+        const alwaysOnTopChecked = this.settings.alwaysOnTop ? '✓' : '';
         const menu = [
             ['Lyrics', 'showLyrics'],
+            ['Always on top ' + alwaysOnTopChecked, 'alwaysOnTopToggle'],
             ['Open Developer Tools', 'openDeveloperTools'],
             ['Quit', 'quit']
         ];
