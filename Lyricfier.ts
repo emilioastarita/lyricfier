@@ -113,7 +113,8 @@ export class Lyricfier {
     }
 
     alwaysOnTopSetup() {
-        this.getWindow().setAlwaysOnTop(this.settings.alwaysOnTop)
+        this.getWindow().setAlwaysOnTop(this.settings.alwaysOnTop);
+        this.getWindow().focus();
         this.appIcon.setContextMenu(this.createTrayMenu());
     }
 
