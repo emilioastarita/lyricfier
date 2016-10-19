@@ -7,6 +7,7 @@ export class SpotifyService {
     protected foundPort  = false;
     protected port : number;
     protected portTries = 15;
+    protected albumImagesCache = {};
 
     protected oAuthToken = {
         t: null,
@@ -37,7 +38,7 @@ export class SpotifyService {
                 return cb(err);
             }
             try {
-                let json = JSON.parse(body);
+                const json = JSON.parse(body);
                 this.oAuthToken.t = json.t;
                 return cb(null, json.t);
             } catch(e) {
@@ -69,15 +70,16 @@ export class SpotifyService {
         if (this.csrfToken) {
             return cb(null, this.csrfToken);
         }
-        let url = this.url('/simplecsrf/token.json');
+        const url = this.url('/simplecsrf/token.json');
         request(url, {
             headers: this.headers(),
             'rejectUnauthorized': false
         }, (err, status, body) => {
             if (err) {
+                console.error('Error getting csrf token URL: ', url);
                 return cb(err);
             }
-            let json = JSON.parse(body);
+            const json = JSON.parse(body);
             this.csrfToken = json.token;
             cb(null, this.csrfToken);
         });
@@ -86,7 +88,9 @@ export class SpotifyService {
     public needsTokens(fn) {
         this.detectPort((err, ok) => {
             if (err) {
-                return fn('No port found! Is spotify running?');
+                const failDetectPort = 'No port found! Is spotify running?';
+                console.error(failDetectPort, err);
+                return fn(failDetectPort);
             }
             async.parallel({
                 csrf: this.getCsrfToken.bind(this),
@@ -99,11 +103,11 @@ export class SpotifyService {
     public getStatus(cb) {
         this.needsTokens((err, tokens) => {
             if (err) return cb(err);
-            let params = {
+            const params = {
                 'oauth': tokens.oauth,
                 'csrf': tokens.csrf,
             };
-            let url = this.url('/remote/status.json') + '?' + this.encodeData(params);
+            const url = this.url('/remote/status.json') + '?' + this.encodeData(params);
 
             request(url, {
                 headers: this.headers(),
@@ -111,25 +115,44 @@ export class SpotifyService {
             }, (err, status, body) => {
 
                 if (err) {
+                    console.error('Error asking for status', err, ' url used: ', url);
                     return cb(err);
                 }
-                let json = JSON.parse(body);
-                cb(null, json);
+                try {
+                    const json = JSON.parse(body);
+                    cb(null, json);
+                } catch(e) {
+                    const msgParseFailed = 'Status response from spotify failed';
+                    console.error(msgParseFailed, ' JSON body: ', body);
+                    cb(msgParseFailed, null);
+                }
+
             });
         });
     }
 
     protected getAlbumImages(albumUri:string, cb) {
-
+        if (this.albumImagesCache[albumUri]) {
+            return cb(null, this.albumImagesCache[albumUri])
+        }
         async.retry(2, (finish) => {
-            let id = albumUri.split('spotify:album:')[1];
-            let url = `https://api.spotify.com/v1/albums/${id}?oauth=${this.oAuthToken.t}`;
+            const id = albumUri.split('spotify:album:')[1];
+            const url = `https://api.spotify.com/v1/albums/${id}?oauth=${this.oAuthToken.t}`;
             request(url, (err, status, body) => {
                 if (err) {
+                    console.error('Error getting album images', err, ' URL: ', url);
                     return finish(err, null)
                 }
-                let parsed = JSON.parse(body);
-                finish(null, parsed.images);
+                try {
+                    const parsed = JSON.parse(body);
+                    finish(null, parsed.images);
+                    this.albumImagesCache[albumUri] = parsed.images;
+                } catch(e) {
+                    const msgParseFail = 'Failed to parse response from spotify api';
+                    console.error(msgParseFail, 'URL USED: ',url);
+                    finish(msgParseFail, null);
+                }
+
             });
         }, cb);
 
@@ -139,12 +162,12 @@ export class SpotifyService {
     public pause(pause:boolean, cb) {
         this.needsTokens((err, tokens) => {
             if (err) return cb(err);
-            let params = {
+            const params = {
                 'oauth': tokens.oauth,
                 'csrf': tokens.csrf,
                 'pause': pause ? 'true' : 'false',
             };
-            let url = this.url('/remote/pause.json') + '?' + this.encodeData(params);
+            const url = this.url('/remote/pause.json') + '?' + this.encodeData(params);
             request(url, {
                 headers: this.headers(),
                 'rejectUnauthorized': false,
@@ -152,7 +175,7 @@ export class SpotifyService {
                 if (err) {
                     return cb(err);
                 }
-                let json = JSON.parse(body);
+                const json = JSON.parse(body);
                 cb(null, json);
             });
         });
@@ -164,7 +187,7 @@ export class SpotifyService {
             if (err) return cb(err);
             if (status.track && status.track.track_resource) {
 
-                let result = {
+                const result = {
                     playing: status.playing,
                     artist: status.track.artist_resource ? status.track.artist_resource.name : 'Unknown',
                     title: status.track.track_resource.name,
