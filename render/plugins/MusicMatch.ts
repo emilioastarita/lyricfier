@@ -2,7 +2,7 @@ import {SearchLyrics} from "./SearchLyrics";
 
 export class MusicMatch extends SearchLyrics {
     public search(title: string, artist: string, cb: (error?: any, lyrics?: string) => void) {
-        let url = `https://www.musixmatch.com/search/${encodeURIComponent(artist)} ${encodeURIComponent(title)}`;
+        let url = `https://www.musixmatch.com/search/${encodeURIComponent(artist)} ${encodeURIComponent(title)}/tracks`;
         this.doReq(url, (err, res, body) => {
             if (err || res.statusCode != 200) {
                 return cb('Error response searching music match');
