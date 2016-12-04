@@ -1,32 +1,23 @@
 import electron = require('electron');
-import storage = require('electron-json-storage');
 import BrowserWindow = Electron.BrowserWindow;
+import {Settings} from "./Settings";
 const platform = require('os').platform();
 const path = require('path');
 
 
-interface Settings {
-    alwaysOnTop: boolean;
-}
 
 export class Lyricfier {
     protected rootDir = '';
     protected window: Electron.BrowserWindow;
     protected app: Electron.App;
     protected appIcon: Electron.Tray;
-    protected settings: Settings = {
-        alwaysOnTop: false
-    };
+    protected settings: Settings;
 
-    constructor(app, root) {
+    constructor(app, settings : Settings, root) {
         this.app = app;
         this.rootDir = root;
-        storage.get('settings', (err, savedSettings: Settings) => {
-            if (err) savedSettings = <Settings>{};
-            if (('alwaysOnTop' in savedSettings) === false) {
-                savedSettings['alwaysOnTop'] = this.settings.alwaysOnTop;
-            }
-            this.settings = savedSettings;
+        this.settings = settings;
+        this.settings.load(() => {
             this.alwaysOnTopSetup();
         });
         this.setupEvents();
@@ -85,22 +76,9 @@ export class Lyricfier {
         });
 
         electron.ipcMain.on('save-settings', (event, newSettings) => {
-            let oldSettings = {};
-            for (let attr in newSettings) {
-                oldSettings[attr] = this.settings[attr];
-            }
-            if (JSON.stringify(newSettings) === JSON.stringify(oldSettings)) {
-                console.log('no modifications')
-            } else {
-                console.log('modified settings!')
-                for (let attr in newSettings) {
-                    this.settings[attr] = newSettings[attr];
-                }
-                storage.set('settings', this.settings, (err) => {
-                    if (err) console.log('Err saving settings', err);
-                });
-            }
-            event.sender.send('settings-update', this.settings);
+            this.settings.save(newSettings, () => {
+                event.sender.send('settings-update', this.settings.getRaw());
+            });
         });
     }
 
@@ -113,21 +91,18 @@ export class Lyricfier {
     }
 
     alwaysOnTopSetup() {
-        this.getWindow().setAlwaysOnTop(this.settings.alwaysOnTop);
+        this.getWindow().setAlwaysOnTop(this.settings.get('alwaysOnTop'));
         this.getWindow().focus();
         this.appIcon.setContextMenu(this.createTrayMenu());
     }
 
     alwaysOnTopToggle() {
-        this.settings.alwaysOnTop = !this.settings.alwaysOnTop;
-        storage.set('settings', this.settings, (err) => {
-            if (err) console.log('Err saving settings', err);
-        });
+        this.settings.set('alwaysOnTop', !this.settings.get('alwaysOnTop'));
         this.alwaysOnTopSetup();
     }
 
     createTrayMenu() {
-        const alwaysOnTopChecked = this.settings.alwaysOnTop ? '✓' : '';
+        const alwaysOnTopChecked = this.settings.get('alwaysOnTop') ? '✓' : '';
         const menu = [
             ['Lyrics', 'showLyrics'],
             ['Always on top ' + alwaysOnTopChecked, 'alwaysOnTopToggle'],
