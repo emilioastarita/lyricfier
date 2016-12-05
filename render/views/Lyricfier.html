@@ -1,6 +1,6 @@
 <div v-if="liveReload">
     <script src="http://localhost:35729/livereload.js"></script>
 </div>
-<div class="main-view">
+<div class="main-view" v-bind:class="theme">
     <componet :is="currentView" :ipc="ipc" :shell="shell" v-on:status="listenStatus" keep-alive></componet>
 </div>

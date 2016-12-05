@@ -785,6 +785,13 @@ button.toast-close-button {
 .main-view {
   height: 100vh;
 }
+.main-view.dark {
+  background-color: #181818;
+  color: #fff;
+}
+.main-view.dark :hover ::-webkit-scrollbar-thumb {
+  background: #333;
+}
 .refresh {
   position: fixed;
   bottom: 1rem;
@@ -855,7 +862,7 @@ button.toast-close-button {
   color: #95989A;
 }
 .lyrics {
-  white-space: pre-line;
+  white-space: pre-wrap;
   flex: 1;
   overflow: auto;
   padding: 1rem;

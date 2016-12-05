@@ -17,7 +17,7 @@ export class Settings {
 
     protected setDefaults(settings: SettingsValues) {
         settings.alwaysOnTop = false;
-        settings.theme = 'dark';
+        settings.theme = 'light';
     }
 
     load(ready) {
