@@ -3,7 +3,7 @@ const async = require('async');
 const initialPortTest = 4370;
 
 export class SpotifyService {
-
+    protected https = false;
     protected foundPort  = false;
     protected port : number;
     protected portTries = 15;
@@ -26,7 +26,8 @@ export class SpotifyService {
     }
 
     protected url(u:string) {
-        return `https://127.0.0.1:${this.port}${u}`;
+        const protocol = this.https ? 'https' : 'http';
+        return `${protocol}://127.0.0.1:${this.port}${u}`;
     }
 
     public getOAuthToken(cb) {
@@ -51,11 +52,16 @@ export class SpotifyService {
         if (!this.foundPort) {
             this.port = initialPortTest;
         }
-        async.retry(this.portTries, (finish) => {
+        async.retry(this.portTries * 2, (finish) => {
             this.getCsrfToken((err, token) => {
                 if (err) {
-                    console.log('FAILED WITH PORT: ', this.port)
-                    this.port++;
+                    console.log('FAILED WITH PORT: ', this.port, ' and https is ', this.https);
+                    if (this.https) {
+                        this.port++;
+                        this.https = false;
+                    } else {
+                        this.https = true;
+                    }
                     return finish(err);
                 }
                 this.foundPort = true;
