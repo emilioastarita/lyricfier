@@ -70,11 +70,11 @@ export class Lyricfier {
         this.app.on('ready', () => {
             this.createAppIcon();
             this.createWindow();
+
         });
         electron.ipcMain.on('get-settings', (event) => {
-            event.sender.send('settings-update', this.settings);
+            event.sender.send('settings-update', this.settings.getRaw());
         });
-
         electron.ipcMain.on('save-settings', (event, newSettings) => {
             this.settings.save(newSettings, () => {
                 event.sender.send('settings-update', this.settings.getRaw());
@@ -101,10 +101,18 @@ export class Lyricfier {
         this.alwaysOnTopSetup();
     }
 
+    darkThemeToggle() {
+        this.settings.set('theme', this.settings.get('theme') === 'dark' ? 'light' : 'dark');
+        this.getWindow().webContents.send('settings-update', this.settings.getRaw());
+        this.appIcon.setContextMenu(this.createTrayMenu());
+    }
+
     createTrayMenu() {
         const alwaysOnTopChecked = this.settings.get('alwaysOnTop') ? '✓' : '';
+        const darkTheme = this.settings.get('theme') === 'dark' ? '✓' : '';
         const menu = [
             ['Lyrics', 'showLyrics'],
+            ['Dark theme ' + darkTheme, 'darkThemeToggle'],
             ['Always on top ' + alwaysOnTopChecked, 'alwaysOnTopToggle'],
             ['Open Developer Tools', 'openDeveloperTools'],
             ['Quit', 'quit']

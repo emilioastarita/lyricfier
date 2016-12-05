@@ -20,6 +20,7 @@ class LyricfierRender {
     protected ipc;
     protected currentView;
     protected liveReload = false;
+    protected theme = 'light';
 
     listenStatus(msg) {
         toastr.info(msg);
@@ -34,11 +35,20 @@ class LyricfierRender {
             ipc: ipcRenderer,
             shell: shell,
             liveReload: false,
-            'currentView': 'SongRender'
+            'currentView': 'SongRender',
+            theme: 'light'
         }
     }
 
     ready() {
+
+        this.ipc.send('get-settings');
+        console.log('setting update setup')
+        this.ipc.on('settings-update', (event, arg) => {
+            console.log('settings update!!!', arg.theme);
+            this.theme = arg.theme;
+        });
+
         this.ipc.on('change-view', (event, page) => {
             this.changeView(page);
         });
