@@ -18,19 +18,19 @@ export class Lyricfier {
         this.rootDir = root;
         this.settings = settings;
         this.subscribeSettingsEvents();
-        var settingsLoaded = false;
-        var appReady = false;
+        this.loadSettingsAndApp(() => this.createAppIconAndWindow());
+    }
+
+    loadSettingsAndApp(cb) {
+        let settingsLoaded = false;
+        let appReady = false;
         this.settings.load(() => {
             settingsLoaded = true;
-            if (appReady) {
-              this.createAppIconAndWindow();
-            }
+            if (appReady) cb();
         });
         this.app.on('ready', () => {
             appReady = true;
-            if (settingsLoaded) {
-              this.createAppIconAndWindow();
-            }
+            if (settingsLoaded) cb();
         });
     }
 
