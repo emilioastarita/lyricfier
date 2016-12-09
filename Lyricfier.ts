@@ -17,10 +17,21 @@ export class Lyricfier {
         this.app = app;
         this.rootDir = root;
         this.settings = settings;
+        this.subscribeSettingsEvents();
+        var settingsLoaded = false;
+        var appReady = false;
         this.settings.load(() => {
-            this.alwaysOnTopSetup();
+            settingsLoaded = true;
+            if (appReady) {
+              this.createAppIconAndWindow();
+            }
         });
-        this.setupEvents();
+        this.app.on('ready', () => {
+            appReady = true;
+            if (settingsLoaded) {
+              this.createAppIconAndWindow();
+            }
+        });
     }
 
     getTrayIcon() {
@@ -35,13 +46,19 @@ export class Lyricfier {
         return trayImage;
     }
 
+    createAppIconAndWindow() {
+      this.createAppIcon();
+      this.createWindow();
+    }
+
     createWindow() {
         let options = {
             width: 500,
             height: 600,
             icon: this.getTrayIcon(),
             frame: false,
-            show: false
+            show: false,
+            alwaysOnTop: this.settings.get('alwaysOnTop')
         };
         this.window = new electron.BrowserWindow(options);
         this.window.on('close', (e) => {
@@ -66,12 +83,7 @@ export class Lyricfier {
         this.appIcon.setContextMenu(this.createTrayMenu());
     }
 
-    setupEvents() {
-        this.app.on('ready', () => {
-            this.createAppIcon();
-            this.createWindow();
-
-        });
+    subscribeSettingsEvents() {
         electron.ipcMain.on('get-settings', (event) => {
             event.sender.send('settings-update', this.settings.getRaw());
         });
@@ -90,15 +102,11 @@ export class Lyricfier {
         return `file://${this.rootDir}/render/views/${name}.html`;
     }
 
-    alwaysOnTopSetup() {
+    alwaysOnTopToggle() {
+        this.settings.set('alwaysOnTop', !this.settings.get('alwaysOnTop'));
         this.getWindow().setAlwaysOnTop(this.settings.get('alwaysOnTop'));
         this.getWindow().focus();
         this.appIcon.setContextMenu(this.createTrayMenu());
-    }
-
-    alwaysOnTopToggle() {
-        this.settings.set('alwaysOnTop', !this.settings.get('alwaysOnTop'));
-        this.alwaysOnTopSetup();
     }
 
     darkThemeToggle() {
