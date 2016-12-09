@@ -16,7 +16,7 @@ Go to [Lyricfier releases page](https://github.com/emilioastarita/lyricfier/rele
 
 ```
 # clone the repo
-git clone git@github.com:emilioastarita/lyricfier.git
+git clone https://github.com/emilioastarita/lyricfier.git
 
 # change dir
 cd lyricfier
