@@ -10,11 +10,15 @@ export class SearchWikia extends SearchLyrics {
             if (err || res.statusCode != 200) {
                 return cb('Error response searching wikia');
             }
-            let json = JSON.parse(body.replace(/'/g, '"').replace('song = ', ''));
-            if (json.lyrics === 'Not found') {
-                return cb('Lyrics not found');
+            try {
+                let json = JSON.parse(body.replace(/'/g, '"').replace('song = ', ''));
+                if (json.lyrics === 'Not found') {
+                    return cb('Lyrics not found');
+                }
+                return this.getSong(json.url, cb);
+            } catch (e) {
+                cb('Wikia fail');
             }
-            return this.getSong(json.url, cb);
         });
     }
 
