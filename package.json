@@ -1,6 +1,6 @@
 {
   "name": "lyricfier",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "Fetching lyrics for spotify desktop client",
   "main": "main.js",
   "scripts": {
