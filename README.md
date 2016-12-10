@@ -49,7 +49,10 @@ You can easily write a new scraping plugin. Just look at the folder `render/plug
 
 ## Collaborators
 
-Idea: @fedeisas
-UI & Design: @silvestreh 
+Original Idea: [@fedeisas](https://github.com/fedeisas)
+
+Bug fixes and lot of improvements [@mrkmndz](https://github.com/mrkmndz)
+
+UI/Design: [@silvestreh](https://github.com/silvestreh) 
 
 #### License [CC0 (Public Domain)](LICENSE.md)
