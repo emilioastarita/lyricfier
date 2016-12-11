@@ -27,6 +27,29 @@
     }
 }
 
+.app-drag-bar {
+    margin: 0;
+    padding: 0;
+    height: 1rem;
+    background: 1rem rgba(0,0,0,0);
+    cursor: move;
+    &:hover {
+        background: 1rem rgba(0,0,0,0);
+    }
+    -webkit-app-region: drag;
+    flex: 1;
+    display: flex;
+    h1 {
+        flex: 1;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.75rem;
+        color: #ccc;
+    }
+}
+
 .refresh {
     position: fixed;
     bottom: 1rem;
@@ -36,7 +59,7 @@
 
 .view-switcher {
     position: fixed;
-    top: 1rem;
+    top: 1.1rem;
     right: 1rem;
     .iconbutton;
 }
@@ -62,8 +85,6 @@
     overflow: hidden;
     min-height: 8rem;
     box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
-    -webkit-app-region: drag;
-
     &::before {
         content: '';
         position: absolute;

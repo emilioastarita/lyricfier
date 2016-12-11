@@ -2,6 +2,9 @@
     <script src="http://localhost:35729/livereload.js"></script>
 </div>
 <div class="main-view" v-bind:class="settings.theme">
+    <div class="app-drag-bar">
+        <h1>lyricfier</h1>
+    </div>
     <a href="#" @click="switchView" title="Switch View" class="view-switcher">
         <i v-if="isView('SongRender')" class="material-icons">settings</i>
         <i v-else class="material-icons">music_note</i>
