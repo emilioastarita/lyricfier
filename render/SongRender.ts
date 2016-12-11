@@ -5,11 +5,11 @@ import {SpotifyService} from './SpotifyService';
 
 @Component({
     props: {
-        'ipc': {
-            'type': Object
-        },
         'shell': {
             'type': Object
+        },
+        'showError': {
+            'type': Function
         }
     },
     template: template('Song')
@@ -21,7 +21,7 @@ export class SongRender {
     protected song;
     protected shell;
     protected searcher: Searcher;
-    protected $dispatch;
+    protected showError;
     protected timer = null;
     protected nextCallTime: number;
 
@@ -44,10 +44,6 @@ export class SongRender {
         }, this.nextCallTime);
     }
 
-    notifyStatus(msg) {
-        this.$dispatch('status', msg)
-    }
-
     ready() {
         this.refresh();
     }
@@ -56,7 +52,7 @@ export class SongRender {
         console.log('refreshing');
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
-                this.notifyStatus('Current song error: ' + err);
+                this.showError('Current song error: ' + err);
                 this.scheduleNextCall();
             } else if (this.isLastSong(song)) {
                 console.log('is last song nothing to do here');
@@ -68,7 +64,7 @@ export class SongRender {
                 this.saveLastSong(song);
                 this.searcher.search(song.title, song.artist, (err, lyric) => {
                     if (err) {
-                        this.notifyStatus('Plugin error: ' + err);
+                        this.showError('Plugin error: ' + err);
                         return;
                     }
                     if (lyric === null) {

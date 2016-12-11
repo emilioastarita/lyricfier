@@ -10,29 +10,31 @@ import Component from 'vue-class-component'
         }
     },
     template: `
-    <style>
-        .modal {
-            top: 110px;
-        }
-    </style>
-    
-    <h2 class="flow-text">Settings!</h2>
-    <hr />
-    
-    <p>Some day you will configure the lyricfier email client here, meanwhile there is no settings.</p>    
+    <div>
+        <style>
+            .modal {
+                top: 110px;
+            }
+        </style>
 
-    <div class="row">
-        <button class="btn waves-effect waves-light" type="submit" v-on:click="saveSettings">Save</button>
-    </div>
-    
-    
-    <div  class="modal" v-if="modal.show" style="display:block;" v-cloak>
-        <div class="modal-content">
-            <h4>{{modal.title}}</h4>
-            <p>{{modal.message}}</p>
+        <h2 class="flow-text">Settings!</h2>
+        <hr />
+
+        <p>Some day you will configure the lyricfier email client here, meanwhile there is no settings.</p>
+
+        <div class="row">
+            <button class="btn waves-effect waves-light" type="submit" v-on:click="saveSettings">Save</button>
         </div>
-        <div class="modal-footer">
-            <a href="#!" v-on:click="closeModal" class="modal-action modal-close waves-effect waves-green btn-flat">OK!</a>
+
+
+        <div  class="modal" v-if="modal.show" style="display:block;" v-cloak>
+            <div class="modal-content">
+                <h4>{{modal.title}}</h4>
+                <p>{{modal.message}}</p>
+            </div>
+            <div class="modal-footer">
+                <a href="#!" v-on:click="closeModal" class="modal-action modal-close waves-effect waves-green btn-flat">OK!</a>
+            </div>
         </div>
     </div>
   `
