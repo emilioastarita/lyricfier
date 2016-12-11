@@ -7,76 +7,49 @@ import Component from 'vue-class-component'
         },
         'shell': {
             'type': Object
+        },
+        'settings': {
+            'type': Object
+        },
+        'onChangeSettings': {
+            'type': Function
         }
     },
     template: `
-    <div>
-        <style>
-            .modal {
-                top: 110px;
-            }
-        </style>
-
-        <h2 class="flow-text">Settings!</h2>
-        <hr />
-
-        <p>Some day you will configure the lyricfier email client here, meanwhile there is no settings.</p>
-
-        <div class="row">
-            <button class="btn waves-effect waves-light" type="submit" v-on:click="saveSettings">Save</button>
+    <div class="lyric-view">
+        <h2 class="flow-text">Settings</h2>
+        <div>
+          <input
+            type="checkbox"
+            id="alwaysOnTopCheckbox"
+            v-model="settings.alwaysOnTop"
+            v-on:change="onChangeSettings()"
+          >
+          <label for="alwaysOnTopCheckbox">Always On Top</label>
         </div>
-
-
-        <div  class="modal" v-if="modal.show" style="display:block;" v-cloak>
-            <div class="modal-content">
-                <h4>{{modal.title}}</h4>
-                <p>{{modal.message}}</p>
-            </div>
-            <div class="modal-footer">
-                <a href="#!" v-on:click="closeModal" class="modal-action modal-close waves-effect waves-green btn-flat">OK!</a>
-            </div>
+        <div>
+          <select
+            id="themeSelector"
+            v-model="settings.theme"
+            v-on:change="onChangeSettings()"
+          >
+              <option>dark</option>
+              <option>light</option>
+          </select>
+          <label for="themeSelector">Theme</label>
         </div>
     </div>
   `
 })
 export class SettingsRender {
-    protected modal;
     protected settings;
     protected ipc;
     protected shell;
-
+    protected onChangeSettings;
 
     data() {
         return {
-            modal: {
-                show: false,
-                title: '',
-                message: ''
-            },
-            settings: {
-                port: ''
-            }
         }
-    }
-
-    ready() {
-        this.ipc.send('get-settings');
-        this.ipc.on('settings-update', (event, arg) => {
-            this.settings = arg;
-        });
-    }
-
-    saveSettings() {
-        this.ipc.send('save-settings', JSON.parse(JSON.stringify(this.settings)));
-        this.modal.show = true;
-        this.modal.title = 'Saved!';
-        this.modal.message = 'Settings updated';
-    }
-
-    closeModal() {
-        this.modal.show = false;
-        this.modal.title = '';
-        this.modal.message = '';
     }
 
     openExternal(url) {
