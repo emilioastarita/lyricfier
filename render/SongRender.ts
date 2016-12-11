@@ -26,14 +26,13 @@ export class SongRender {
     protected searcher: Searcher;
     protected showError;
     protected timer = null;
-    protected nextCallTime: number;
+    protected settings;
 
     data() {
         return {
             song: null,
             lastSongSync: {},
             searcher: new Searcher(),
-            nextCallTime: 5000
         }
     }
 
@@ -41,10 +40,14 @@ export class SongRender {
         if (this.timer) {
             clearTimeout(this.timer);
         }
-        console.warn('Scheduling ', this.nextCallTime / 1000 , ' seconds');
+        console.warn(
+          'Scheduling ',
+          this.settings.refreshInterval / 1000,
+          ' seconds'
+        );
         this.timer = setTimeout(() => {
             this.refresh();
-        }, this.nextCallTime);
+        }, this.settings.refreshInterval);
     }
 
     ready() {
