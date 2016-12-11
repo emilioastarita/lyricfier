@@ -10,6 +10,9 @@ import {SpotifyService} from './SpotifyService';
         },
         'showError': {
             'type': Function
+        },
+        'settings': {
+            'type': Object
         }
     },
     template: template('Song')
