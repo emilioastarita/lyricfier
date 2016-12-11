@@ -840,7 +840,19 @@ button.toast-close-button {
 .view-switcher .material-icons {
   font-size: 1.25rem;
 }
+.full-vertical-flex {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
 .lyric-view {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+.settings-view {
+  margin-left: 10pt;
+  margin-right: 10pt;
   display: flex;
   flex-direction: column;
   height: 100vh;
