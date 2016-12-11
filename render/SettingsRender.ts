@@ -7,74 +7,77 @@ import Component from 'vue-class-component'
         },
         'shell': {
             'type': Object
+        },
+        'settings': {
+            'type': Object
+        },
+        'onChangeSettings': {
+            'type': Function
         }
     },
     template: `
-    <style>
-        .modal {
-            top: 110px;
-        }
-    </style>
-    
-    <h2 class="flow-text">Settings!</h2>
-    <hr />
-    
-    <p>Some day you will configure the lyricfier email client here, meanwhile there is no settings.</p>    
-
-    <div class="row">
-        <button class="btn waves-effect waves-light" type="submit" v-on:click="saveSettings">Save</button>
-    </div>
-    
-    
-    <div  class="modal" v-if="modal.show" style="display:block;" v-cloak>
-        <div class="modal-content">
-            <h4>{{modal.title}}</h4>
-            <p>{{modal.message}}</p>
+    <div class="settings-view" :class="settings.fontSize">
+        <h2 class="flow-text">Settings</h2>
+        <div>
+          <input
+            type="checkbox"
+            id="alwaysOnTopCheckbox"
+            v-model="settings.alwaysOnTop"
+            v-on:change="onChangeSettings()"
+          >
+          <label for="alwaysOnTopCheckbox">Always On Top</label>
         </div>
-        <div class="modal-footer">
-            <a href="#!" v-on:click="closeModal" class="modal-action modal-close waves-effect waves-green btn-flat">OK!</a>
+        <div>
+          <select
+            id="themeSelector"
+            v-model="settings.theme"
+            v-on:change="onChangeSettings()"
+          >
+              <option>dark</option>
+              <option>light</option>
+          </select>
+          <label for="themeSelector">Theme</label>
+        </div>
+        <div>
+          <select
+            id="fontSizeSelector"
+            v-model="settings.fontSize"
+            v-on:change="onChangeSettings()"
+          >
+              <option value="eight-pt">8 pt</option>
+              <option value="ten-pt">10 pt</option>
+              <option value="twelve-pt">12 pt</option>
+              <option value="fourteen-pt">14 pt</option>
+              <option value="sixteen-pt">16 pt</option>
+          </select>
+          <label for="fontSizeSelector">Font Size</label>
+        </div>
+        <div>
+          <select
+            id="refreshIntervalSelector"
+            v-model="settings.refreshInterval"
+            v-on:change="onChangeSettings()"
+          >
+              <option :value="1000">1 sec</option>
+              <option :value="3000">3 sec</option>
+              <option :value="5000">5 sec</option>
+              <option :value="7000">7 sec</option>
+              <option :value="10000">10 sec</option>
+          </select>
+          <label for="refreshIntervalSelector">Refresh Rate</label>
         </div>
     </div>
   `
 })
 export class SettingsRender {
-    protected modal;
     protected settings;
     protected ipc;
     protected shell;
-
+    protected onChangeSettings;
 
     data() {
         return {
-            modal: {
-                show: false,
-                title: '',
-                message: ''
-            },
-            settings: {
-                port: ''
-            }
         }
-    }
-
-    ready() {
-        this.ipc.send('get-settings');
-        this.ipc.on('settings-update', (event, arg) => {
-            this.settings = arg;
-        });
-    }
-
-    saveSettings() {
-        this.ipc.send('save-settings', JSON.parse(JSON.stringify(this.settings)));
-        this.modal.show = true;
-        this.modal.title = 'Saved!';
-        this.modal.message = 'Settings updated';
-    }
-
-    closeModal() {
-        this.modal.show = false;
-        this.modal.title = '';
-        this.modal.message = '';
     }
 
     openExternal(url) {
