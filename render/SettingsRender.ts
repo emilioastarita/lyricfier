@@ -16,7 +16,11 @@ import Component from 'vue-class-component'
         }
     },
     template: `
-    <div class="settings-view" :class="settings.fontSize">
+    <div class="full-vertical-flex" :class="settings.fontSize">
+      <div class="app-drag-bar">
+          <h1>lyricfier</h1>
+      </div>
+      <div class="settings-container">
         <h2 class="flow-text">Settings</h2>
         <div>
           <input
@@ -66,6 +70,7 @@ import Component from 'vue-class-component'
           </select>
           <label for="refreshIntervalSelector">Refresh Rate</label>
         </div>
+      </div>
     </div>
   `
 })
