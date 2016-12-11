@@ -4,6 +4,7 @@ import storage = require('electron-json-storage');
 interface SettingsValues {
     alwaysOnTop: boolean;
     theme: 'dark'|'light';
+    fontSize: 'eight-pt'|'ten-pt'|'twelve-pt'|'fourteen-pt'|'sixteen-pt';
 }
 
 
@@ -18,6 +19,7 @@ export class Settings {
     protected setDefaults(settings: SettingsValues) {
         settings.alwaysOnTop = false;
         settings.theme = 'light';
+        settings.fontSize = 'twelve-pt';
     }
 
     load(ready) {

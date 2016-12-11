@@ -16,7 +16,7 @@ import Component from 'vue-class-component'
         }
     },
     template: `
-    <div class="lyric-view">
+    <div class="lyric-view" :class="settings.fontSize">
         <h2 class="flow-text">Settings</h2>
         <div>
           <input
@@ -37,6 +37,20 @@ import Component from 'vue-class-component'
               <option>light</option>
           </select>
           <label for="themeSelector">Theme</label>
+        </div>
+        <div>
+          <select
+            id="fontSizeSelector"
+            v-model="settings.fontSize"
+            v-on:change="onChangeSettings()"
+          >
+              <option value="eight-pt">8 pt</option>
+              <option value="ten-pt">10 pt</option>
+              <option value="twelve-pt">12 pt</option>
+              <option value="fourteen-pt">14 pt</option>
+              <option value="sixteen-pt">16 pt</option>
+          </select>
+          <label for="fontSizeSelector">Font Size</label>
         </div>
     </div>
   `
