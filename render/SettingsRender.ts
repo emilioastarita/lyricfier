@@ -16,7 +16,7 @@ import Component from 'vue-class-component'
         }
     },
     template: `
-    <div class="lyric-view" :class="settings.fontSize">
+    <div class="settings-view" :class="settings.fontSize">
         <h2 class="flow-text">Settings</h2>
         <div>
           <input
