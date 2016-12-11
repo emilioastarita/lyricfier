@@ -1,20 +1,60 @@
-.refresh {
-    position: fixed;
-    bottom: 1rem;
-    right: 1rem;
-    color: black;
+.eight-pt {
+  font-size: 8pt;
+}
+
+.ten-pt {
+  font-size: 10pt
+}
+
+.twelve-pt {
+  font-size: 12pt;
+}
+
+.fourteen-pt {
+  font-size: 14pt;
+}
+
+.sixteen-pt {
+  font-size: 16pt;
+}
+
+.iconbutton {
     opacity: 0.5;
     z-index: 10;
-
+    color: black;
     .material-icons {
         font-size: 1.25rem;
     }
 }
 
+.refresh {
+    position: fixed;
+    bottom: 1rem;
+    right: 1rem;
+    .iconbutton;
+}
+
+.view-switcher {
+    position: fixed;
+    top: 1rem;
+    right: 1rem;
+    .iconbutton;
+}
+
+.full-vertical-flex {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
 .lyric-view {
-    display: flex;
-    flex-direction: column;
-    height: 100vh;
+  .full-vertical-flex;
+}
+
+.settings-view {
+  margin-left: 10pt;
+  margin-right: 10pt;
+  .full-vertical-flex;
 }
 
 .header {

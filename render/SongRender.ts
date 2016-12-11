@@ -5,10 +5,13 @@ import {SpotifyService} from './SpotifyService';
 
 @Component({
     props: {
-        'ipc': {
+        'shell': {
             'type': Object
         },
-        'shell': {
+        'showError': {
+            'type': Function
+        },
+        'settings': {
             'type': Object
         }
     },
@@ -21,16 +24,15 @@ export class SongRender {
     protected song;
     protected shell;
     protected searcher: Searcher;
-    protected $dispatch;
+    protected showError;
     protected timer = null;
-    protected nextCallTime: number;
+    protected settings;
 
     data() {
         return {
             song: null,
             lastSongSync: {},
             searcher: new Searcher(),
-            nextCallTime: 5000
         }
     }
 
@@ -38,14 +40,14 @@ export class SongRender {
         if (this.timer) {
             clearTimeout(this.timer);
         }
-        console.warn('Scheduling ', this.nextCallTime / 1000 , ' seconds');
+        console.warn(
+          'Scheduling ',
+          this.settings.refreshInterval / 1000,
+          ' seconds'
+        );
         this.timer = setTimeout(() => {
             this.refresh();
-        }, this.nextCallTime);
-    }
-
-    notifyStatus(msg) {
-        this.$dispatch('status', msg)
+        }, this.settings.refreshInterval);
     }
 
     ready() {
@@ -56,7 +58,7 @@ export class SongRender {
         console.log('refreshing');
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
-                this.notifyStatus('Current song error: ' + err);
+                this.showError('Current song error: ' + err);
                 this.scheduleNextCall();
             } else if (this.isLastSong(song)) {
                 console.log('is last song nothing to do here');
@@ -68,7 +70,7 @@ export class SongRender {
                 this.saveLastSong(song);
                 this.searcher.search(song.title, song.artist, (err, lyric) => {
                     if (err) {
-                        this.notifyStatus('Plugin error: ' + err);
+                        this.showError('Plugin error: ' + err);
                         return;
                     }
                     if (lyric === null) {

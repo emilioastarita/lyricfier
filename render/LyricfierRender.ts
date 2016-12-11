@@ -5,6 +5,7 @@ import {ipcRenderer, shell}  from 'electron';
 import {SettingsRender} from './SettingsRender';
 import {SongRender} from './SongRender';
 import {template} from './template';
+import {defaultSettings, SettingsValues} from '../Settings';
 const toastr = require('toastr');
 toastr.options.positionClass = 'toast-bottom-left';
 toastr.options.timeout = '60000';
@@ -20,7 +21,7 @@ class LyricfierRender {
     protected ipc;
     protected currentView;
     protected liveReload = false;
-    protected theme = 'light';
+    protected settings: SettingsValues;
 
     listenStatus(msg) {
         toastr.info(msg);
@@ -36,7 +37,7 @@ class LyricfierRender {
             shell: shell,
             liveReload: false,
             'currentView': 'SongRender',
-            theme: 'light'
+            settings: defaultSettings,
         }
     }
 
@@ -45,8 +46,7 @@ class LyricfierRender {
         this.ipc.send('get-settings');
         console.log('setting update setup')
         this.ipc.on('settings-update', (event, arg) => {
-            console.log('settings update!!!', arg.theme);
-            this.theme = arg.theme;
+            this.settings = arg;
         });
 
         this.ipc.on('change-view', (event, page) => {
@@ -60,6 +60,18 @@ class LyricfierRender {
         this.ipc.on('status', (event, msg) => {
             this.listenStatus(msg);
         });
+    }
+
+    saveSettings() {
+        this.ipc.send('settings-update', JSON.parse(JSON.stringify(this.settings)));
+    }
+
+    switchView() {
+        if (this.isView('SongRender')) {
+            this.changeView('SettingsRender');
+        } else {
+            this.changeView('SongRender');
+        }
     }
 
     changeView(page) {

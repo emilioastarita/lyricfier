@@ -1,27 +1,29 @@
-<a href="#" v-if="song" @click.prevent="refresh" title="Sync current song" class="refresh">
-    <i class="material-icons">replay</i>
-</a>
+<div>
+    <a href="#" v-if="song" @click.prevent="refresh" title="Sync current song" class="refresh">
+        <i class="material-icons">replay</i>
+    </a>
 
-<div v-if="song" class="lyric-view">
-    <header class="header">
+    <div v-if="song" class="lyric-view">
+        <header class="header">
 
-        <!-- if we have images !-->
-        <span v-if="song.album.images" class="header__background" :style="{ backgroundImage: 'url(' + song.album.images[0].url + ')' }"></span>
-        <img  v-if="song.album.images" class="header__album-art" :src="song.album.images[0].url" alt="{{song.album.name}}">
+            <!-- if we have images !-->
+            <span v-if="song.album.images" class="header__background" :style="{ backgroundImage: 'url(' + song.album.images[0].url + ')' }"></span>
+            <img  v-if="song.album.images" class="header__album-art" :src="song.album.images[0].url" alt="{{song.album.name}}">
 
-        <!-- showing default logo !-->
-        <span v-if="song.album.images == null" class="header__background" style="background-image: url(../img/icon.png);"></span>
-        <img  v-if="song.album.images == null" class="header__album-art" style="padding: 5px; box-sizing: border-box;" src="../img/icon.png" alt="{{song.album.name}}">
+            <!-- showing default logo !-->
+            <span v-if="song.album.images == null" class="header__background" style="background-image: url(../img/icon.png);"></span>
+            <img  v-if="song.album.images == null" class="header__album-art" style="padding: 5px; box-sizing: border-box;" src="../img/icon.png" alt="{{song.album.name}}">
 
-        <h3>{{ song.title }}</h3>
-        <h4>{{ song.artist }}</h4>
-    </header>
-    <div id="lyricBox" class="lyrics">{{ song.lyric }}</div>
-</div>
+            <h3>{{ song.title }}</h3>
+            <h4>{{ song.artist }}</h4>
+        </header>
+        <div id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyric }}</div>
+    </div>
 
-<div v-else class="not-playing-view">
-    <img src="../img/waves.svg" alt="Waveform">
-    <h3>Looking for a Song on Spotify</h3>
-    <p>Is Spotify runnig?</p>
-    <a href="#" @click.prevent="refresh" class="button">Try Again</a>
+    <div v-else class="not-playing-view">
+        <img src="../img/waves.svg" alt="Waveform">
+        <h3>Looking for a Song on Spotify</h3>
+        <p>Is Spotify runnig?</p>
+        <a href="#" @click.prevent="refresh" class="button">Try Again</a>
+    </div>
 </div>
