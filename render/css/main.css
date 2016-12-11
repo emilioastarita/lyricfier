@@ -792,15 +792,37 @@ button.toast-close-button {
 .main-view.dark :hover ::-webkit-scrollbar-thumb {
   background: #333;
 }
+.main-view.dark .material-icons {
+  color: white;
+}
+.iconbutton {
+  opacity: 0.5;
+  z-index: 10;
+  color: black;
+}
+.iconbutton .material-icons {
+  font-size: 1.25rem;
+}
 .refresh {
   position: fixed;
   bottom: 1rem;
   right: 1rem;
-  color: black;
   opacity: 0.5;
   z-index: 10;
+  color: black;
 }
 .refresh .material-icons {
+  font-size: 1.25rem;
+}
+.view-switcher {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  opacity: 0.5;
+  z-index: 10;
+  color: black;
+}
+.view-switcher .material-icons {
   font-size: 1.25rem;
 }
 .lyric-view {

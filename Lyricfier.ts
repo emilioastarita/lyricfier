@@ -87,11 +87,24 @@ export class Lyricfier {
         electron.ipcMain.on('get-settings', (event) => {
             event.sender.send('settings-update', this.settings.getRaw());
         });
-        electron.ipcMain.on('save-settings', (event, newSettings) => {
-            this.settings.save(newSettings, () => {
-                event.sender.send('settings-update', this.settings.getRaw());
-            });
+        electron.ipcMain.on('settings-update', (event, newSettings) => {
+            this.settings.save(newSettings, () => this.reactToSettings());
         });
+    }
+
+    reactToSettings() {
+        this.getWindow().setAlwaysOnTop(this.settings.get('alwaysOnTop'));
+        this.getWindow().focus();
+        this.appIcon.setContextMenu(this.createTrayMenu());
+    }
+
+    changeSetting(key, value) {
+        this.settings.set(key, value);
+        this.reactToSettings();
+        this.getWindow().webContents.send(
+          'settings-update',
+          this.settings.getRaw()
+        );
     }
 
     getImg(name) {
@@ -103,16 +116,14 @@ export class Lyricfier {
     }
 
     alwaysOnTopToggle() {
-        this.settings.set('alwaysOnTop', !this.settings.get('alwaysOnTop'));
-        this.getWindow().setAlwaysOnTop(this.settings.get('alwaysOnTop'));
-        this.getWindow().focus();
-        this.appIcon.setContextMenu(this.createTrayMenu());
+        this.changeSetting('alwaysOnTop', !this.settings.get('alwaysOnTop'));
     }
 
     darkThemeToggle() {
-        this.settings.set('theme', this.settings.get('theme') === 'dark' ? 'light' : 'dark');
-        this.getWindow().webContents.send('settings-update', this.settings.getRaw());
-        this.appIcon.setContextMenu(this.createTrayMenu());
+        this.changeSetting(
+          'theme',
+          this.settings.get('theme') === 'dark' ? 'light' : 'dark'
+        );
     }
 
     createTrayMenu() {

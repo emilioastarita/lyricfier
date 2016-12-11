@@ -1,7 +1,11 @@
 <div v-if="liveReload">
     <script src="http://localhost:35729/livereload.js"></script>
 </div>
-<div class="main-view" v-bind:class="theme">
+<div class="main-view" v-bind:class="settings.theme">
+    <a href="#" @click="switchView" title="Switch View" class="view-switcher">
+        <i v-if="isView('SongRender')" class="material-icons">settings</i>
+        <i v-else class="material-icons">music_note</i>
+    </a>
     <song-render
       v-show="isView('SongRender')"
       :shell="shell"
@@ -12,6 +16,8 @@
       v-show="isView('SettingsRender')"
       :ipc="ipc"
       :shell="shell"
+      :settings="settings"
+      :on-change-settings="saveSettings"
       keep-alive
     ></settings-render>
 </div>

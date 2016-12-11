@@ -20,7 +20,7 @@ class LyricfierRender {
     protected ipc;
     protected currentView;
     protected liveReload = false;
-    protected theme = 'light';
+    protected settings;
 
     listenStatus(msg) {
         toastr.info(msg);
@@ -36,7 +36,7 @@ class LyricfierRender {
             shell: shell,
             liveReload: false,
             'currentView': 'SongRender',
-            theme: 'light'
+            settings: {theme: 'light', alwaysOnTop: false}
         }
     }
 
@@ -45,8 +45,7 @@ class LyricfierRender {
         this.ipc.send('get-settings');
         console.log('setting update setup')
         this.ipc.on('settings-update', (event, arg) => {
-            console.log('settings update!!!', arg.theme);
-            this.theme = arg.theme;
+            this.settings = arg;
         });
 
         this.ipc.on('change-view', (event, page) => {
@@ -60,6 +59,18 @@ class LyricfierRender {
         this.ipc.on('status', (event, msg) => {
             this.listenStatus(msg);
         });
+    }
+
+    saveSettings() {
+        this.ipc.send('settings-update', JSON.parse(JSON.stringify(this.settings)));
+    }
+
+    switchView() {
+        if (this.isView('SongRender')) {
+            this.changeView('SettingsRender');
+        } else {
+            this.changeView('SongRender');
+        }
     }
 
     changeView(page) {
