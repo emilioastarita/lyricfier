@@ -5,6 +5,7 @@ import {ipcRenderer, shell}  from 'electron';
 import {SettingsRender} from './SettingsRender';
 import {SongRender} from './SongRender';
 import {template} from './template';
+import {defaultSettings, SettingsValues} from '../Settings';
 const toastr = require('toastr');
 toastr.options.positionClass = 'toast-bottom-left';
 toastr.options.timeout = '60000';
@@ -20,7 +21,7 @@ class LyricfierRender {
     protected ipc;
     protected currentView;
     protected liveReload = false;
-    protected settings;
+    protected settings: SettingsValues;
 
     listenStatus(msg) {
         toastr.info(msg);
@@ -36,7 +37,7 @@ class LyricfierRender {
             shell: shell,
             liveReload: false,
             'currentView': 'SongRender',
-            settings: {theme: 'light', alwaysOnTop: false}
+            settings: defaultSettings,
         }
     }
 

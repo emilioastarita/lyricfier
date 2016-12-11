@@ -1,13 +1,19 @@
 import storage = require('electron-json-storage');
 
 
-interface SettingsValues {
+export interface SettingsValues {
     alwaysOnTop: boolean;
     theme: 'dark'|'light';
     fontSize: 'eight-pt'|'ten-pt'|'twelve-pt'|'fourteen-pt'|'sixteen-pt';
     refreshInterval: number;
 }
 
+export const defaultSettings: SettingsValues = {
+    alwaysOnTop: false,
+    theme: 'light',
+    fontSize: 'twelve-pt',
+    refreshInterval: 5000
+};
 
 export class Settings {
 
@@ -18,10 +24,9 @@ export class Settings {
     }
 
     protected setDefaults(settings: SettingsValues) {
-        settings.alwaysOnTop = false;
-        settings.theme = 'light';
-        settings.fontSize = 'twelve-pt';
-        settings.refreshInterval = 5000;
+        for (let k of Object.keys(defaultSettings)) {
+            settings[k] = defaultSettings[k];
+        }
     }
 
     load(ready) {
