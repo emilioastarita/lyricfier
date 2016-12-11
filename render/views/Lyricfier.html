@@ -2,5 +2,16 @@
     <script src="http://localhost:35729/livereload.js"></script>
 </div>
 <div class="main-view" v-bind:class="theme">
-    <componet :is="currentView" :ipc="ipc" :shell="shell" v-on:status="listenStatus" keep-alive></componet>
+    <song-render
+      v-show="isView('SongRender')"
+      :shell="shell"
+      :show-error="listenStatus"
+      keep-alive
+    ></song-render>
+    <settings-render
+      v-show="isView('SettingsRender')"
+      :ipc="ipc"
+      :shell="shell"
+      keep-alive
+    ></settings-render>
 </div>
