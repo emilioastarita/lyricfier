@@ -52,6 +52,20 @@ import Component from 'vue-class-component'
           </select>
           <label for="fontSizeSelector">Font Size</label>
         </div>
+        <div>
+          <select
+            id="refreshIntervalSelector"
+            v-model="settings.refreshInterval"
+            v-on:change="onChangeSettings()"
+          >
+              <option :value="1000">1 sec</option>
+              <option :value="3000">3 sec</option>
+              <option :value="5000">5 sec</option>
+              <option :value="7000">7 sec</option>
+              <option :value="10000">10 sec</option>
+          </select>
+          <label for="refreshIntervalSelector">Refresh Rate</label>
+        </div>
     </div>
   `
 })

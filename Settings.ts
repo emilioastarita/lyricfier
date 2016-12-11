@@ -5,6 +5,7 @@ interface SettingsValues {
     alwaysOnTop: boolean;
     theme: 'dark'|'light';
     fontSize: 'eight-pt'|'ten-pt'|'twelve-pt'|'fourteen-pt'|'sixteen-pt';
+    refreshInterval: number;
 }
 
 
@@ -20,6 +21,7 @@ export class Settings {
         settings.alwaysOnTop = false;
         settings.theme = 'light';
         settings.fontSize = 'twelve-pt';
+        settings.refreshInterval = 5000;
     }
 
     load(ready) {
