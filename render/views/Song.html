@@ -3,8 +3,11 @@
         <i class="material-icons">replay</i>
     </a>
 
-    <div v-if="song" class="lyric-view">
+    <div v-if="song" class="full-vertical-flex">
         <header class="header">
+            <div class="app-drag-bar">
+                <h1>lyricfier</h1>
+            </div>
 
             <!-- if we have images !-->
             <span v-if="song.album.images" class="header__background" :style="{ backgroundImage: 'url(' + song.album.images[0].url + ')' }"></span>
@@ -19,11 +22,15 @@
         </header>
         <div id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyric }}</div>
     </div>
-
-    <div v-else class="not-playing-view">
-        <img src="../img/waves.svg" alt="Waveform">
-        <h3>Looking for a Song on Spotify</h3>
-        <p>Is Spotify runnig?</p>
-        <a href="#" @click.prevent="refresh" class="button">Try Again</a>
+    <div v-else class="full-vertical-flex">
+      <div class="app-drag-bar">
+          <h1>lyricfier</h1>
+      </div>
+      <div class="not-playing-view">
+          <img src="../img/waves.svg" alt="Waveform">
+          <h3>Looking for a Song on Spotify</h3>
+          <p>Is Spotify running?</p>
+          <a href="#" @click.prevent="refresh" class="button">Try Again</a>
+      </div>
     </div>
 </div>
