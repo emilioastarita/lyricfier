@@ -156,7 +156,7 @@ export class Lyricfier {
     }
 
     showLyrics() {
-        this.getOpenWindow().webContents.send('change-view', 'SongLyrics');
+        this.getOpenWindow().webContents.send('change-view', 'SongRender');
     }
 
     getOpenWindow() {
