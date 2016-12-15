@@ -12,7 +12,7 @@
     "render/plugins/MusicMatch",
     "render/plugins/SearchLyrics",
     "render/plugins/SearchWikia",
-    "render/Searcher.ts",
+    "render/Song.ts",
     "render/LyricfierRender.ts",
     "render/SettingsRender.ts",
     "render/SongRender.ts"

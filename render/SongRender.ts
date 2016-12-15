@@ -1,5 +1,5 @@
 import Component from 'vue-class-component';
-import {Song} from "./Searcher";
+import {Song} from "./Song";
 import {template} from './template';
 import {SpotifyService} from './SpotifyService';
 import {SearchWikia} from "./plugins/SearchWikia";

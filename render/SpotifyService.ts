@@ -1,4 +1,4 @@
-import {Song} from './Searcher';
+import {Song} from './Song';
 const request = require('request').defaults({timeout: 5000});
 const async = require('async');
 const initialPortTest = 4370;
