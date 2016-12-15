@@ -10,17 +10,17 @@
             </div>
 
             <!-- if we have images !-->
-            <span v-if="song.album.images" class="header__background" :style="{ backgroundImage: 'url(' + song.album.images[0].url + ')' }"></span>
-            <img  v-if="song.album.images" class="header__album-art" :src="song.album.images[0].url" alt="{{song.album.name}}">
+            <span v-if="song.albumArt" class="header__background" :style="{ backgroundImage: 'url(' + song.albumArt.url + ')' }"></span>
+            <img  v-if="song.albumArt" class="header__album-art" :src="song.albumArt.url" alt="{{song.album}}">
 
             <!-- showing default logo !-->
-            <span v-if="song.album.images == null" class="header__background" style="background-image: url(../img/icon.png);"></span>
-            <img  v-if="song.album.images == null" class="header__album-art" style="padding: 5px; box-sizing: border-box;" src="../img/icon.png" alt="{{song.album.name}}">
+            <span v-if="song.albumArt== null" class="header__background" style="background-image: url(../img/icon.png);"></span>
+            <img  v-if="song.albumArt == null" class="header__album-art" style="padding: 5px; box-sizing: border-box;" src="../img/icon.png" alt="{{song.album}}">
 
             <h3>{{ song.title }}</h3>
             <h4>{{ song.artist }}</h4>
         </header>
-        <div id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyric }}</div>
+        <div id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyrics }}</div>
     </div>
     <div v-else class="full-vertical-flex">
       <div class="app-drag-bar">

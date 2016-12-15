@@ -1,7 +1,11 @@
 import Component from 'vue-class-component';
-import {Searcher} from "./Searcher";
+import {Song} from "./Searcher";
 import {template} from './template';
 import {SpotifyService} from './SpotifyService';
+import {SearchWikia} from "./plugins/SearchWikia";
+import {MusicMatch} from "./plugins/MusicMatch";
+const plugins = [MusicMatch, SearchWikia];
+const request = require('request').defaults({timeout: 5000});
 
 @Component({
     props: {
@@ -21,18 +25,19 @@ import {SpotifyService} from './SpotifyService';
 export class SongRender {
     protected lastSongSync;
     protected service:SpotifyService;
-    protected song;
+    protected song: Song;
     protected shell;
-    protected searcher: Searcher;
     protected showError;
     protected timer = null;
     protected settings;
+    protected plugins;
 
     data() {
         return {
             song: null,
-            lastSongSync: {},
-            searcher: new Searcher(),
+            plugins: plugins.map((Plugin) => {
+                return new Plugin(request);
+            })
         }
     }
 
@@ -56,59 +61,25 @@ export class SongRender {
 
     refresh() {
         console.log('refreshing');
-        this.getSpotify().getCurrentSong((err, song) => {
-            if (err) {
-                this.showError('Current song error: ' + err);
-                this.scheduleNextCall();
-            } else if (this.isLastSong(song)) {
+        this.getSpotify().getCurrentSong((song) => {
+            if (!!this.song && this.song.isSameSong(song)) {
                 console.log('is last song nothing to do here');
                 this.scheduleNextCall();
             } else {
                 console.log('is not last song searching by title and artist');
-                song.lyric = 'Loading Lyrics...';
-                this.displaySong(song);
-                this.saveLastSong(song);
-                this.searcher.search(song.title, song.artist, (err, lyric) => {
-                    if (err) {
-                        this.showError('Plugin error: ' + err);
-                        return;
-                    }
-                    if (lyric === null) {
-                      song.lyric = 'Sorry, couldn\'t find lyrics for this song!';
-                    } else {
-                      song.lyric = lyric;
-                    }
-                    this.displaySong(song);
+                this.song = song;
+                song.loadLyrics(this.plugins, (song) => {
+                    this.song = song;
                     this['$nextTick'](() => {
                         document.getElementById("lyricBox").scrollTop = 0;
                     });
                     this.scheduleNextCall();
                 });
             }
+        }, (err) => {
+            this.showError('Current song error: ' + err);
+            this.scheduleNextCall();
         });
-    }
-
-    displaySong(song) {
-      const newSongObject = {};
-      for (let k of Object.keys(song)) {
-          newSongObject[k] = song[k];
-      }
-      this.song = newSongObject;
-    }
-
-    isLastSong(song) {
-        for (let k of ['artist', 'title']) {
-            if (song[k] !== this.lastSongSync[k]) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    saveLastSong(song) {
-        for (let k of Object.keys(song)) {
-            this.lastSongSync[k] = song[k];
-        }
     }
 
     getSpotify() {

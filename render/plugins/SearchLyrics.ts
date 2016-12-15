@@ -24,8 +24,14 @@ export class SearchLyrics {
         return this.req(opt, cb);
     }
 
-    public search(title: string, artist: string, cb: (error?: any, lyrics?: string) => void) {
+    public search(
+        title: string,
+        artist: string,
+        cb: (error?: any, lyrics?: string, sourceURL?: string) => void
+    ) {
+    }
 
+    public getName(): string {
+      return '';
     }
 }
-

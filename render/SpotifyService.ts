@@ -1,3 +1,4 @@
+import {Song} from './Searcher';
 const request = require('request').defaults({timeout: 5000});
 const async = require('async');
 const initialPortTest = 4370;
@@ -137,7 +138,7 @@ export class SpotifyService {
         });
     }
 
-    protected getAlbumImages(albumUri:string, cb) {
+    public getAlbumImages(albumUri:string, cb) {
         if (this.albumImagesCache[albumUri]) {
             return cb(null, this.albumImagesCache[albumUri])
         }
@@ -188,35 +189,20 @@ export class SpotifyService {
 
     }
 
-    public getCurrentSong(cb) {
+    public getCurrentSong(cb: (song: Song) => void, errorCb: (error: string) => void) {
         this.getStatus((err, status)=> {
-            if (err) return cb(err);
+            if (err) return errorCb(err);
             if (status.track && status.track.track_resource) {
-
-                const result = {
-                    playing: status.playing,
-                    artist: status.track.artist_resource ? status.track.artist_resource.name : 'Unknown',
-                    title: status.track.track_resource.name,
-                    album: {
-                        name: 'Unknown',
-                        images: null
-                    }
-                };
-
-                if (status.track.album_resource) {
-                    result.album.name = status.track.album_resource.name;
-                    return this.getAlbumImages(status.track.album_resource.uri, (err, images) => {
-                        if (!err) {
-                            result.album.images = images;
-                        }
-                        return cb(null, result);
-                    });
-                } else {
-                    return cb(null, result);
-                }
-
+                return Song.makeWithAlbumResource(
+                  status.playing,
+                  status.track.artist_resource.name,
+                  status.track.track_resource.name,
+                  status.track.album_resource,
+                  this,
+                  (song) => {cb(song)}
+                );
             }
-            return cb('No song', null)
+            return errorCb('No song')
         });
     }
 

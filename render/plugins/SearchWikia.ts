@@ -35,7 +35,11 @@ export class SearchWikia extends SearchLyrics {
             let decodedHtml = he.decode(rawHtml);
             let text = cheerio.load('<div class="lyrics-spotify">' + decodedHtml + '</div>')('.lyrics-spotify').text()
             let lyrics = text.replace(/!NEWLINE!/g, "\n");
-            return cb(null, lyrics);
+            return cb(null, lyrics, url);
         });
+    }
+
+    public getName(): string {
+      return 'Wikia';
     }
 }
