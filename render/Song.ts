@@ -101,9 +101,10 @@ export class Song {
               (err, result, sourceURL) => {
                   if (err) {
                       console.log('Plugin ' + plugin.getName() + ' error: ' + err);
-                      this.loadLyrics(remaining, cb);
+                  } else if (result.trim().length === 0){
+                      console.log('Plugin ' + plugin.getName() + ' returned blank');
                   } else {
-                      cb(new Song(
+                      return cb(new Song(
                           this.playing,
                           this.artist,
                           this.title,
@@ -114,6 +115,7 @@ export class Song {
                           result,
                       ));
                   }
+                  this.loadLyrics(remaining, cb);
               }
           );
       }
