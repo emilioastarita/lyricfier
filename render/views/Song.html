@@ -10,8 +10,8 @@
             </div>
 
             <!-- if we have images !-->
-            <span v-if="song.albumArt" class="header__background" :style="{ backgroundImage: 'url(' + song.albumArt.url + ')' }"></span>
-            <img  v-if="song.albumArt" class="header__album-art" :src="song.albumArt.url" alt="{{song.album}}">
+            <span v-if="song.albumArt" class="header__background" :style="{ backgroundImage: 'url(' + song.albumArt + ')' }"></span>
+            <img  v-if="song.albumArt" class="header__album-art" :src="song.albumArt" alt="{{song.album}}">
 
             <!-- showing default logo !-->
             <span v-if="song.albumArt== null" class="header__background" style="background-image: url(../img/icon.png);"></span>

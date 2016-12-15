@@ -52,7 +52,7 @@ export class Song {
               (err, images) => {
                   let albumArt;
                   if (images) {
-                    albumArt = images[0];
+                    albumArt = images[0].url;
                   }
                   cb(new Song(
                       playing,
