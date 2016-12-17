@@ -1,5 +1,12 @@
+
+interface SearchResult {
+    lyric : string;
+    url : string;
+}
+
 export class SearchLyrics {
     protected req;
+    public name  = 'Generic';
 
     public constructor(req = null) {
         this.req = req;
@@ -24,7 +31,7 @@ export class SearchLyrics {
         return this.req(opt, cb);
     }
 
-    public search(title: string, artist: string, cb: (error?: any, lyrics?: string) => void) {
+    public search(title: string, artist: string, cb: (error?: any, result?: SearchResult) => void) {
 
     }
 }
