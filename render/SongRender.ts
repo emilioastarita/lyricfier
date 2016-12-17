@@ -68,15 +68,19 @@ export class SongRender {
                 song.lyric = 'Loading Lyrics...';
                 this.displaySong(song);
                 this.saveLastSong(song);
-                this.searcher.search(song.title, song.artist, (err, lyric) => {
+                this.searcher.search(song.title, song.artist, (err, result) => {
                     if (err) {
                         this.showError('Plugin error: ' + err);
                         return;
                     }
-                    if (lyric === null) {
+                    if (result.lyric === null) {
                       song.lyric = 'Sorry, couldn\'t find lyrics for this song!';
+                      song.sourceUrl = null;
+                      song.sourceName = null;
                     } else {
-                      song.lyric = lyric;
+                      song.lyric = result.lyric;
+                      song.sourceUrl = result.sourceUrl;
+                      song.sourceName = result.sourceName;
                     }
                     this.displaySong(song);
                     this['$nextTick'](() => {

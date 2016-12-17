@@ -3,7 +3,11 @@ let cheerio = require('cheerio')
 let he = require('he');
 
 export class SearchWikia extends SearchLyrics {
-    public search(title: string, artist: string, cb: (error?: any, lyrics?: string) => void) {
+
+    public name  = 'Wikia';
+
+
+    public search(title: string, artist: string, cb: (error?: any, lyrics?) => void) {
         let url = `http://lyrics.wikia.com/api.php?action=lyrics&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(title)}&fmt=json&func=getSong`;
 
         this.doReq(url, (err, res, body) => {
@@ -34,8 +38,8 @@ export class SearchWikia extends SearchLyrics {
             let rawHtml = cheerio.load(body)('.lyricbox').html().replace(/<br>/g, '!NEWLINE!');
             let decodedHtml = he.decode(rawHtml);
             let text = cheerio.load('<div class="lyrics-spotify">' + decodedHtml + '</div>')('.lyrics-spotify').text()
-            let lyrics = text.replace(/!NEWLINE!/g, "\n");
-            return cb(null, lyrics);
+            let lyric = text.replace(/!NEWLINE!/g, "\n");
+            return cb(null, {lyric: lyric, url: url});
         });
     }
 }
