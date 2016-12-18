@@ -17,12 +17,8 @@ export class SpotifyService {
     protected queue = [];
 
 
-    protected headers() {
+    protected static headers() {
         return {'Origin': 'https://open.spotify.com'};
-    }
-
-    protected subDomain() {
-        return (Math.floor(Math.random() * (999999999999))).toString();
     }
 
     protected url(u:string) {
@@ -48,12 +44,12 @@ export class SpotifyService {
         });
     }
 
-    public detectPort(cb) {
+    public detectPort(cb : (err, port : number) => void) {
         if (!this.foundPort) {
             this.port = initialPortTest;
         }
         async.retry(this.portTries * 2, (finish) => {
-            this.getCsrfToken((err, token) => {
+            this.getCsrfToken((err) => {
                 if (err) {
                     console.log('FAILED WITH PORT: ', this.port, ' and https is ', this.https);
                     if (this.https) {
@@ -66,7 +62,7 @@ export class SpotifyService {
                 }
                 this.foundPort = true;
                 console.log('VALID PORT', this.port);
-                finish(err, token)
+                finish(err, this.port)
             });
         }, cb);
     }
@@ -78,7 +74,7 @@ export class SpotifyService {
         }
         const url = this.url('/simplecsrf/token.json');
         request(url, {
-            headers: this.headers(),
+            headers: SpotifyService.headers(),
             'rejectUnauthorized': false
         }, (err, status, body) => {
             if (err) {
@@ -92,16 +88,17 @@ export class SpotifyService {
     }
 
     public needsTokens(fn) {
-        this.detectPort((err, ok) => {
+        this.detectPort( (err) => {
             if (err) {
                 const failDetectPort = 'No port found! Is spotify running?';
                 console.error(failDetectPort, err);
                 return fn(failDetectPort);
             }
-            async.parallel({
+            const parallelJob = {
                 csrf: this.getCsrfToken.bind(this),
                 oauth: this.getOAuthToken.bind(this),
-            }, fn);
+            };
+            async.parallel(parallelJob, fn);
         });
 
     }
@@ -116,7 +113,7 @@ export class SpotifyService {
             const url = this.url('/remote/status.json') + '?' + this.encodeData(params);
 
             request(url, {
-                headers: this.headers(),
+                headers: SpotifyService.headers(),
                 'rejectUnauthorized': false,
             }, (err, status, body) => {
 
@@ -175,7 +172,7 @@ export class SpotifyService {
             };
             const url = this.url('/remote/pause.json') + '?' + this.encodeData(params);
             request(url, {
-                headers: this.headers(),
+                headers: SpotifyService.headers(),
                 'rejectUnauthorized': false,
             }, (err, status, body) => {
                 if (err) {
