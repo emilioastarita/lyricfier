@@ -36,17 +36,17 @@ class LyricfierRender {
             ipc: ipcRenderer,
             shell: shell,
             liveReload: false,
-            'currentView': 'SongRender',
+            currentView: 'SongRender',
             settings: defaultSettings,
         }
     }
 
     ready() {
-
         this.ipc.send('get-settings');
         console.log('setting update setup')
         this.ipc.on('settings-update', (event, arg) => {
             this.settings = arg;
+            console.log(arg);
         });
 
         this.ipc.on('change-view', (event, page) => {

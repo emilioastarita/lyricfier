@@ -1,0 +1,29 @@
+.app-drag-bar {
+    margin: 0;
+    padding: 0;
+    height: 1.5rem;
+    background: rgba(0, 0, 0, .125);
+    cursor: move;
+    flex: 0 0 auto;
+    display: flex;
+    border-bottom: 1px solid rgba(0, 0, 0, .125);
+    width: ~"calc(100% - 2rem)";
+    -webkit-app-region: drag;
+    -webkit-mask-image: linear-gradient(to right, white 50%, transparent);
+
+    h1 {
+        flex: 1;
+        display: flex;
+        text-align: center;
+        justify-content: center;
+        align-items: center;
+        font-size: 0.75rem;
+        color: #424242;
+    }
+
+    .dark & {
+        h1 {
+            color: rgba(255, 255, 255, .8);
+        }
+    }
+}
