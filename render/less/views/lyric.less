@@ -1,52 +1,30 @@
 .eight-pt {
-  font-size: 8pt;
+    font-size: 8pt;
 }
 
 .ten-pt {
-  font-size: 10pt
+    font-size: 10pt
 }
 
 .twelve-pt {
-  font-size: 12pt;
+    font-size: 12pt;
 }
 
 .fourteen-pt {
-  font-size: 14pt;
+    font-size: 14pt;
 }
 
 .sixteen-pt {
-  font-size: 16pt;
+    font-size: 16pt;
 }
 
 .iconbutton {
     opacity: 0.5;
     z-index: 10;
     color: black;
+
     .material-icons {
         font-size: 1.25rem;
-    }
-}
-
-.app-drag-bar {
-    margin: 0;
-    padding: 0;
-    height: 1rem;
-    background: 1rem rgba(0,0,0,0);
-    cursor: move;
-    &:hover {
-        background: 1rem rgba(0,0,0,0);
-    }
-    -webkit-app-region: drag;
-    flex: 0 0 auto;
-    display: flex;
-    h1 {
-        flex: 1;
-        display: flex;
-        text-align: center;
-        justify-content: center;
-        align-items: center;
-        font-size: 0.75rem;
-        color: #ccc;
     }
 }
 
@@ -58,20 +36,25 @@
 }
 
 .view-switcher {
-    position: fixed;
-    top: 1.1rem;
-    right: 1rem;
     .iconbutton;
+    position: fixed;
+    top: .2rem;
+    right: .25rem;
+    cursor: pointer;
+
+    .material-icons {
+        font-size: 1rem;
+    }
 }
 
 .full-vertical-flex {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
 }
 
 .lyric-view {
-  .full-vertical-flex;
+    .full-vertical-flex;
 }
 
 .settings-container {
@@ -84,6 +67,7 @@
     overflow: hidden;
     min-height: 8rem;
     box-shadow: 0 0.25rem 1rem rgba(0, 0, 0, 0.1);
+
     &::before {
         content: '';
         position: absolute;
@@ -119,7 +103,6 @@
     h3, h4 {
         font-weight: 300;
         margin: 0 1rem 0 0;
-        text-shadow: 0 0.125rem 1rem white;
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
@@ -128,11 +111,11 @@
     h3 {
         font-size: 1.5rem;
         margin-top: 1rem;
-        color: #666;
+        color: currentColor;
     }
 
     h4 {
-        color: #95989A;
+        color: currentColor;
     }
 }
 
@@ -143,6 +126,7 @@
     padding: 1rem;
     line-height: 1.75;
     position: relative;
+    user-select: all;
 
     &:first-letter {
         text-transform: capitalize;
@@ -151,5 +135,9 @@
 
 .credits-source {
     padding: 1rem;
-    font-size: 8pt;
+    font-size: .65em;
+
+    a {
+        color: #03A9F4;
+    }
 }
