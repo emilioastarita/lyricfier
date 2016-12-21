@@ -23,12 +23,17 @@ export class SettingsRender {
     protected ipc;
     protected shell;
     protected onChangeSettings;
+    protected $parent;
 
     openExternal(url) {
         this.shell.openExternal(url);
     }
 
+    setTheme(theme) {
+        this.settings.theme = theme;
+    }
+
     goBack() {
-        this.$emit('change-view', 'SongRender');
+        this.$parent.changeView('SongRender');
     }
 }

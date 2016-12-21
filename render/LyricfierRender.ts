@@ -46,6 +46,7 @@ class LyricfierRender {
         console.log('setting update setup')
         this.ipc.on('settings-update', (event, arg) => {
             this.settings = arg;
+            console.log(arg);
         });
 
         this.ipc.on('change-view', (event, page) => {
