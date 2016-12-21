@@ -11,10 +11,13 @@
 @import 'views/main';
 @import 'views/lyric';
 @import 'views/not-playing';
+@import 'views/settings';
 
 // Components
+@import 'components/app-drag-bar';
 @import 'components/buttons';
 @import 'components/scrollbars';
+@import 'components/select';
 @import 'components/toasts';
 
 :root {
@@ -23,6 +26,7 @@
     color: #515151;
     cursor: default;
     -webkit-font-smoothing: antialiased;
+    user-select: none;
 }
 
 a {

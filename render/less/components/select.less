@@ -1,0 +1,21 @@
+select {
+    font-size: .85rem;
+    vertical-align: middle;
+    background-color: rgba(0, 0, 0, .125);
+    background-image: url('../img/arrow-down.svg');
+    background-repeat: no-repeat;
+    background-position: ~"calc(100% - .5em)" ~"calc(50% + .125em)";
+    background-size: 1.5em;
+    border: 1px solid rgba(0, 0, 0, .125);
+    color: currentColor;
+    display: inline-block;
+    height: 2em;
+    padding: 0 1.75em 0 0.5em;
+    outline: none;
+    min-width: 10em;
+    -webkit-appearance: none;
+
+    .dark & {
+        background-image: url('../img/arrow-down-light.svg');
+    }
+}

@@ -1,12 +1,33 @@
 .main-view {
     height: 100vh;
-    background-color: white;
+    color: #424242;
+
+    .material-icons {
+        color: #424242;
+    }
+
+    &::before {
+        background-color: white;
+        content: '';
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        pointer-events: none;
+        z-index: -2;
+
+    }
+
     &.dark {
-        background-color: #181818;
-        color: #fff;
-        :hover ::-webkit-scrollbar-thumb { background: #333; }
+        color: rgba(255, 255, 255, .8);
+
         .material-icons {
-            color: white;
+            color: rgba(255, 255, 255, .8);
+        }
+
+        &::before {
+            background-color: #37474F;
         }
     }
 }
