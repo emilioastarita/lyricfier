@@ -187,7 +187,12 @@ export class SpotifyService {
 
     public getCurrentSong(cb) {
         this.getStatus((err, status)=> {
-            if (err) return cb(err);
+            if (err) {
+                this.foundPort = false;
+                this.csrfToken = null;
+                this.oAuthToken.t = null;
+                return cb(err);
+            }
             console.log('getStatus', status);
             if (status.track && status.track.track_resource) {
 

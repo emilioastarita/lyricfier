@@ -22,8 +22,21 @@ class LyricfierRender {
     protected currentView;
     protected liveReload = false;
     protected settings: SettingsValues;
+    protected lastMessageTime = 0;
+    protected lastMessage = '';
 
     listenStatus(msg) {
+        if (msg === this.lastMessage) {
+            // not spamming same message.
+            const now = new Date();
+            const last = new Date(this.lastMessageTime);
+            last.setMilliseconds(last.getMilliseconds() + 4500);
+            if (now < last) {
+                return;
+            }
+        }
+        this.lastMessageTime = (new Date()).getTime();
+        this.lastMessage = msg;
         toastr.info(msg);
     }
 
