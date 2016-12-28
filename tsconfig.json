@@ -13,6 +13,7 @@
     "render/plugins/SearchLyrics",
     "render/plugins/SearchWikia",
     "render/Searcher.ts",
+    "render/NormalizeTitles.ts",
     "render/LyricfierRender.ts",
     "render/SettingsRender.ts",
     "render/SongRender.ts"
