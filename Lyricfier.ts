@@ -64,6 +64,7 @@ export class Lyricfier {
         this.window.on('close', (e) => {
             e.preventDefault();
             this.window.hide();
+            this.quit();
         });
         this.window.loadURL(this.getView('index'));
         this.window.on('ready-to-show', () => {
