@@ -19,6 +19,7 @@ import {SpotifyService} from './SpotifyService';
 })
 
 export class SongRender {
+    protected $parent;
     protected lastSongSync;
     protected service:SpotifyService;
     protected song;
@@ -55,6 +56,7 @@ export class SongRender {
     }
 
     refresh() {
+        this.resizeOnLyricsHide();
         console.log('refreshing');
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
@@ -62,6 +64,9 @@ export class SongRender {
                 this.scheduleNextCall();
             } else if (this.isLastSong(song)) {
                 console.log('is last song nothing to do here');
+                this.scheduleNextCall();
+            } else if (this.settings.hideLyrics) {
+                this.displaySong(song);
                 this.scheduleNextCall();
             } else {
                 console.log('is not last song searching by title and artist');
@@ -125,4 +130,18 @@ export class SongRender {
     openExternal(url) {
         this.shell.openExternal(url);
     }
+
+    resizeOnLyricsHide() {
+        if (!this.settings.hideLyrics) {
+            return;
+        }
+        const header = document.getElementsByTagName('header').length ? document.getElementsByTagName('header')[0] : null;
+        if (header) {
+            const width = Math.max(header.clientWidth, 300);
+            const height = Math.max(header.clientHeight, 150);
+            window.resizeTo(width, height);
+            this.$parent.changeView('SongRender');
+        }
+    }
+
 }

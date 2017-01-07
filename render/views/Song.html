@@ -1,10 +1,10 @@
 <div>
-    <a href="#" v-if="song" @click.prevent="refresh" title="Sync current song" class="refresh">
+    <a href="#" v-if="song && !settings.hideLyrics" @click.prevent="refresh" title="Sync current song" class="refresh">
         <i class="material-icons">replay</i>
     </a>
 
     <div v-if="song" class="full-vertical-flex">
-        <header class="header">
+        <header class="header" >
             <div class="app-drag-bar">
                 <h1>lyricfier</h1>
             </div>
@@ -20,9 +20,9 @@
             <h3>{{ song.title }}</h3>
             <h4>{{ song.artist }}</h4>
         </header>
-        <div id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyric }}</div>
+        <div v-if="!settings.hideLyrics" id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyric }}</div>
 
-        <div class="credits-source" v-if="song.sourceName">Source:  <a href="#" @click.prevent="openExternal(song.sourceUrl)">{{song.sourceName}}</a></div>
+        <div v-if="!settings.hideLyrics" class="credits-source" v-if="song.sourceName">Source:  <a href="#" @click.prevent="openExternal(song.sourceUrl)">{{song.sourceName}}</a></div>
 
     </div>
     <div v-else class="full-vertical-flex">
