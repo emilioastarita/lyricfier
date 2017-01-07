@@ -120,6 +120,10 @@ export class Lyricfier {
         this.changeSetting('alwaysOnTop', !this.settings.get('alwaysOnTop'));
     }
 
+    hideLyricsToggle() {
+        this.changeSetting('hideLyrics', !this.settings.get('hideLyrics'));
+    }
+
     darkThemeToggle() {
         this.changeSetting(
           'theme',
@@ -129,11 +133,12 @@ export class Lyricfier {
 
     createTrayMenu() {
         const alwaysOnTopChecked = this.settings.get('alwaysOnTop') ? '✓' : '';
+        const hideLyricsChecked = this.settings.get('hideLyrics') ? '✓' : '';
         const darkTheme = this.settings.get('theme') === 'dark' ? '✓' : '';
         const menu = [
-            ['Lyrics', 'showLyrics'],
             ['Dark theme ' + darkTheme, 'darkThemeToggle'],
             ['Always on top ' + alwaysOnTopChecked, 'alwaysOnTopToggle'],
+            ['Hide Lyrics' + hideLyricsChecked, 'hideLyricsToggle'],
             ['Open Developer Tools', 'openDeveloperTools'],
             ['Quit', 'quit']
         ];
@@ -154,10 +159,6 @@ export class Lyricfier {
 
     showSettings() {
         this.getOpenWindow().webContents.send('change-view', 'Settings');
-    }
-
-    showLyrics() {
-        this.getOpenWindow().webContents.send('change-view', 'SongRender');
     }
 
     getOpenWindow() {

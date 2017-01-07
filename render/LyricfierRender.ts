@@ -59,7 +59,7 @@ class LyricfierRender {
         console.log('setting update setup')
         this.ipc.on('settings-update', (event, arg) => {
             this.settings = arg;
-            console.log(arg);
+            console.log('settings-updated', arg);
         });
 
         this.ipc.on('change-view', (event, page) => {
@@ -74,6 +74,7 @@ class LyricfierRender {
             this.listenStatus(msg);
         });
     }
+
 
     saveSettings() {
         this.ipc.send('settings-update', JSON.parse(JSON.stringify(this.settings)));

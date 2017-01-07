@@ -3,12 +3,14 @@ import storage = require('electron-json-storage');
 
 export interface SettingsValues {
     alwaysOnTop: boolean;
+    hideLyrics: boolean;
     theme: 'dark'|'light';
     fontSize: 'eight-pt'|'ten-pt'|'twelve-pt'|'fourteen-pt'|'sixteen-pt';
     refreshInterval: number;
 }
 
 export const defaultSettings: SettingsValues = {
+    hideLyrics: false,
     alwaysOnTop: false,
     theme: 'light',
     fontSize: 'twelve-pt',
