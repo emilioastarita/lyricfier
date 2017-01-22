@@ -20,18 +20,18 @@ export class MusicMatch extends SearchLyrics {
     }
 
     public parseContent(body:string) : string  {
-        let str = body.split('"body":"')[1].replace(/\\n/g, "\n");
-        let result = [];
-        const len = str.length;
-        for (let i = 0 ;  i < len; i++) {
-            if (str[i] === '"' && (i === 0 || str[i - 1] !== '\\')) {
-                return result.join('');
-            } else if (str[i] === '"') {
-                result.pop();
-            }
-            result.push(str[i]) ;
-        }
-        return result.join('');
+        if (body.indexOf('"countryDenied":"XW"') != -1) {           
+            //  Lyric are restricted worldwide         
+            return null;}    
+        //  Don't get lyrics from crowdLyricsList, get the right lyrics instead    
+        let properLyricsObjectStart = body.indexOf('"lyrics":{"id":');   
+        if (properLyricsObjectStart === -1) {         
+            //  No lyrics            return null;  
+        }      
+        let correctLyricsStart = body.indexOf('"body":"', properLyricsObjectStart) + 8;       
+        let correctLyricsEnd = body.indexOf('","', correctLyricsStart);      
+        let correctLyrics = body.substring(correctLyricsStart, correctLyricsEnd).replace(/\\n/g, "\n").replace(/\\"/g, '"');   
+        return(correctLyrics);
     }
 
     protected getSong(url, cb) {
