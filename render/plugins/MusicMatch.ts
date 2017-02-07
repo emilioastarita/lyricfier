@@ -14,23 +14,39 @@ export class MusicMatch extends SearchLyrics {
                 let firstUrl = /"track_share_url":"([^"]+)"/.exec(body)[1];
                 return this.getSong(firstUrl, cb);
             } catch (e) {
-                cb('Music match fail');
+                //  No matches in tracks, search all results. Tracks might be listed with/without addendum like a word or phrase in parenthesis.
+                let url = `https://www.musixmatch.com/search/${encodeURIComponent(artist)} ${encodeURIComponent(title)}`;
+                this.doReq(url, (err, res, body) => {
+                    if (err || res.statusCode != 200) {
+                        return cb('Error response searching music match');
+                    }
+                    try {
+                        let firstUrl = /"track_share_url":"([^"]+)"/.exec(body)[1];
+                        return this.getSong(firstUrl, cb);
+                    } catch (e) {
+                        cb('Music match fail');
+                    }
+                });
             }
         });
     }
 
-    public parseContent(body:string) : string  {
-        if (body.indexOf('"countryDenied":"XW"') != -1) {           
-            //  Lyric are restricted worldwide         
-            return null;}    
-        //  Don't get lyrics from crowdLyricsList, get the right lyrics instead    
-        let properLyricsObjectStart = body.indexOf('"lyrics":{"id":');   
-        if (properLyricsObjectStart === -1) {         
-            //  No lyrics            return null;  
-        }      
-        let correctLyricsStart = body.indexOf('"body":"', properLyricsObjectStart) + 8;       
-        let correctLyricsEnd = body.indexOf('","', correctLyricsStart);      
-        let correctLyrics = body.substring(correctLyricsStart, correctLyricsEnd).replace(/\\n/g, "\n").replace(/\\"/g, '"');   
+    public parseContent(body:string) : string  {
+        //  Don't get lyrics from crowdLyricsList, get the proper lyrics instead
+        let properLyricsObjectStart = body.indexOf('"lyrics":{"id":');
+        if (properLyricsObjectStart === -1) {
+            //  No lyrics
+            return null;
+        }
+        let correctLyricsStart = body.indexOf('"body":"', properLyricsObjectStart) + 8;
+        let restrictedStart = body.indexOf('"restricted":1', properLyricsObjectStart);
+        if (restrictedStart !== -1 && restrictedStart < correctLyricsStart) {
+            //  Lyrics are restricted
+            return null;
+        }
+        let correctLyricsEnd = body.indexOf('","', correctLyricsStart);
+        let correctLyricsBody = body.substring(correctLyricsStart, correctLyricsEnd)
+        let correctLyrics = correctLyricsBody.replace(/\\n/g, "\n").replace(/\\"/g, '"');
         return(correctLyrics);
     }
 
