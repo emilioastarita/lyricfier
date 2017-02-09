@@ -14,24 +14,57 @@ export class MusicMatch extends SearchLyrics {
                 let firstUrl = /"track_share_url":"([^"]+)"/.exec(body)[1];
                 return this.getSong(firstUrl, cb);
             } catch (e) {
-                cb('Music match fail');
+                //  No matches in tracks, search all results. Tracks might be listed with/without addendum like a word or phrase in parenthesis.
+                let url = `https://www.musixmatch.com/search/${encodeURIComponent(artist)} ${encodeURIComponent(title)}`;
+                this.doReq(url, (err, res, body) => {
+                    if (err || res.statusCode != 200) {
+                        return cb('Error response searching music match');
+                    }
+                    try {
+                        let firstUrl = /"track_share_url":"([^"]+)"/.exec(body)[1];
+                        return this.getSong(firstUrl, cb);
+                    } catch (e) {
+                        //  No matches in all results either, try expected lyrics url directly
+                        let artistEncoded = artist.replace(/[^\w]/gi, '-');
+                        let titleEncoded = title.replace(/[^\w]/gi, '-');
+                        let url = "https://www.musixmatch.com/lyrics/" + artistEncoded + "/" + titleEncoded;
+                        this.doReq(url, (err, res, body) => {
+                            if (err || res.statusCode != 200) {
+                                return cb('Error response searching music match');
+                            }
+                            try {
+                                return this.getSong(url, cb);
+                            } catch (e) {
+                                cb('Music match fail');
+                            }
+                        });
+                    }
+                });
             }
         });
     }
 
-    public parseContent(body:string) : string  {
-        let str = body.split('"body":"')[1].replace(/\\n/g, "\n");
-        let result = [];
-        const len = str.length;
-        for (let i = 0 ;  i < len; i++) {
-            if (str[i] === '"' && (i === 0 || str[i - 1] !== '\\')) {
-                return result.join('');
-            } else if (str[i] === '"') {
-                result.pop();
-            }
-            result.push(str[i]) ;
+    public parseContent(body:string) : string  {
+        //  Check if there is a missing lyrics error, for example when trying expected lyrics url directly as last resort
+        if (body.indexOf('"error":{"status":404') !== -1) {
+            return null;
         }
-        return result.join('');
+        //  Don't get lyrics from crowdLyricsList, get the proper lyrics instead
+        let properLyricsObjectStart = body.indexOf('"lyrics":{"id":');
+        if (properLyricsObjectStart === -1) {
+            //  No lyrics
+            return null;
+        }
+        let correctLyricsStart = body.indexOf('"body":"', properLyricsObjectStart) + 8;
+        let restrictedStart = body.indexOf('"restricted":1', properLyricsObjectStart);
+        if (restrictedStart !== -1 && restrictedStart < correctLyricsStart) {
+            //  Lyrics are restricted
+            return null;
+        }
+        let correctLyricsEnd = body.indexOf('","', correctLyricsStart);
+        let correctLyricsBody = body.substring(correctLyricsStart, correctLyricsEnd)
+        let correctLyrics = correctLyricsBody.replace(/\\n/g, "\n").replace(/\\"/g, '"');
+        return(correctLyrics);
     }
 
     protected getSong(url, cb) {
