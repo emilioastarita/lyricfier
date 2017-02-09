@@ -24,7 +24,20 @@ export class MusicMatch extends SearchLyrics {
                         let firstUrl = /"track_share_url":"([^"]+)"/.exec(body)[1];
                         return this.getSong(firstUrl, cb);
                     } catch (e) {
-                        cb('Music match fail');
+                        //  No matches in all results either, try expected lyrics url directly
+                        let artistEncoded = artist.replace(/[^\w]/gi, '-');
+                        let titleEncoded = title.replace(/[^\w]/gi, '-');
+                        let url = "https://www.musixmatch.com/lyrics/" + artistEncoded + "/" + titleEncoded;
+                        this.doReq(url, (err, res, body) => {
+                            if (err || res.statusCode != 200) {
+                                return cb('Error response searching music match');
+                            }
+                            try {
+                                return this.getSong(url, cb);
+                            } catch (e) {
+                                cb('Music match fail');
+                            }
+                        });
                     }
                 });
             }
@@ -32,6 +45,10 @@ export class MusicMatch extends SearchLyrics {
     }
 
     public parseContent(body:string) : string  {
+        //  Check if there is a missing lyrics error, for example when trying expected lyrics url directly as last resort
+        if (body.indexOf('"error":{"status":404') !== -1) {
+            return null;
+        }
         //  Don't get lyrics from crowdLyricsList, get the proper lyrics instead
         let properLyricsObjectStart = body.indexOf('"lyrics":{"id":');
         if (properLyricsObjectStart === -1) {
