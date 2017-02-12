@@ -193,9 +193,8 @@ export class SpotifyService {
                 this.oAuthToken.t = null;
                 return cb(err);
             }
-            console.log('getStatus', status);
-            if (status.track && status.track.track_resource) {
 
+            if (status.track && status.track.track_resource) {
                 const result = {
                     playing: status.playing,
                     artist: status.track.artist_resource ? status.track.artist_resource.name : 'Unknown',
@@ -203,7 +202,8 @@ export class SpotifyService {
                     album: {
                         name: 'Unknown',
                         images: null
-                    }
+                    },
+                    duration: status.track.length
                 };
 
                 if (status.track.album_resource) {

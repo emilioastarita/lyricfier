@@ -90,6 +90,8 @@ export class SongRender {
                     this.displaySong(song);
                     this['$nextTick'](() => {
                         document.getElementById("lyricBox").scrollTop = 0;
+                        //console.log("offset height" + document.getElementById("lyricBox").offsetHeight);
+                        //console.log("scroll height" + document.getElementById("lyricBox").scrollHeight);
                     });
                     this.scheduleNextCall();
                 });
