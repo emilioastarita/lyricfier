@@ -9,7 +9,6 @@
     "gulpfile",
     "main",
     "Lyricfier",
-    "render/plugins/MusicMatch",
     "render/plugins/SearchLyrics",
     "render/plugins/SearchWikia",
     "render/Searcher.ts",
