@@ -90,13 +90,30 @@ export class SongRender {
                     this.displaySong(song);
                     this['$nextTick'](() => {
                         document.getElementById("lyricBox").scrollTop = 0;
-                        //console.log("offset height" + document.getElementById("lyricBox").offsetHeight);
-                        //console.log("scroll height" + document.getElementById("lyricBox").scrollHeight);
+                        var scrollHeight = document.getElementById("lyricBox").scrollHeight;
+                        var height = document.getElementById("lyricBox").offsetHeight;
+                        console.log("Time: "+ typeof song.duration);
+                        var waitTime = height/scrollHeight * song.duration/2 * 1000;
+                        var scrollInterval = 1/scrollHeight * song.duration * 1000;
+                        setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height,scrollInterval), waitTime);
+                        //console.log("register "+this.song.name);
+                        //setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height,scrollInterval), 0);
                     });
                     this.scheduleNextCall();
                 });
             }
         });
+    }
+
+    pageScroll(aSong, i, s) {
+        document.getElementById("lyricBox").scrollTop += 1;
+        if(this.song.title != aSong.title) {
+            console.log("Switched song")
+        }
+        else if(i > 0 ) {
+            setTimeout(this.pageScroll.bind(null, aSong, i-1, s), s);
+        }
+
     }
 
     displaySong(song) {
