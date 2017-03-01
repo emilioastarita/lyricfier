@@ -96,8 +96,6 @@ export class SongRender {
                         var waitTime = height/scrollHeight * song.duration/2 * 1000;
                         var scrollInterval = 1/scrollHeight * song.duration * 1000;
                         setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height,scrollInterval), waitTime);
-                        //console.log("register "+this.song.name);
-                        //setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height,scrollInterval), 0);
                     });
                     this.scheduleNextCall();
                 });
