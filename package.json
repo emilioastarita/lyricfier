@@ -5,7 +5,7 @@
   "main": "main.js",
   "scripts": {
     "prestart": "tsc && lessc render/less/main.less render/css/main.css",
-    "start": "electron . --enable-logging",
+    "start": "electron .",
     "dist:linux64": "electron-zip-packager  . --arch=x64 --platform=linux  --overwrite --prune --out=build/ --icon=render/img/icon.png",
     "dist:linux32": "electron-zip-packager  . --arch=ia32 --platform=linux  --overwrite --prune --out=build/ --icon=render/img/icon.png",
     "dist:win32": "electron-zip-packager  . --arch=ia32 --platform=win32  --overwrite --prune --out=build/ --icon=render/img/icon.ico",

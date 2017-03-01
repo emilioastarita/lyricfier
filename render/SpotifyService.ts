@@ -193,7 +193,6 @@ export class SpotifyService {
                 this.oAuthToken.t = null;
                 return cb(err);
             }
-
             if (status.track && status.track.track_resource) {
                 const result = {
                     playing: status.playing,
