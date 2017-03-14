@@ -18,7 +18,10 @@ export class SpotifyService {
 
 
     protected static headers() {
-        return {'Origin': 'https://open.spotify.com'};
+        return {
+            'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36', // Placeholder user-agent
+            'Origin': 'https://open.spotify.com'
+        };
     }
 
     protected url(u:string) {
@@ -30,7 +33,11 @@ export class SpotifyService {
         if (this.oAuthToken.t) {
             return cb(null, this.oAuthToken.t);
         }
-        request.get('https://open.spotify.com/token', (err, status, body) => {
+        request.get({
+            url:'https://open.spotify.com/token',
+            rejectUnauthorized: false,
+            headers: SpotifyService.headers()
+        }, (err, status, body) => {
             if (err) {
                 return cb(err);
             }
