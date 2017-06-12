@@ -48,7 +48,6 @@
     "@types/electron-json-storage": "latest",
     "@types/mocha": "latest",
     "@types/node": "4.0.30",
-    "@types/vue": "latest",
     "electron-builder": "^6.4.0",
     "electron-packager": "^7.7.0",
     "electron-prebuilt": "^1.4.10",
