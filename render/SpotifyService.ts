@@ -73,12 +73,14 @@ export class SpotifyService {
             return cb(null, this.csrfToken);
         }
         const url = this.url('/simplecsrf/token.json');
+        console.log("========");
         request(url, {
             headers: SpotifyService.headers(),
             'rejectUnauthorized': false
         }, (err, status, body) => {
             if (err) {
-                console.error('Error getting csrf token URL: ', url);
+                console.error('Error getting csrf token URL: ', status);
+                console.error(err);
                 return cb(err);
             }
             const json = JSON.parse(body);

@@ -88,15 +88,17 @@ export class SongRender {
                       song.sourceName = result.sourceName;
                     }
                     this.displaySong(song);
-                    this['$nextTick'](() => {
-                        document.getElementById("lyricBox").scrollTop = 0;
-                        var scrollHeight = document.getElementById("lyricBox").scrollHeight;
-                        var height = document.getElementById("lyricBox").offsetHeight;
-                        console.log("Time: "+ typeof song.duration);
-                        var waitTime = height/scrollHeight * song.duration/2 * 1000;
-                        var scrollInterval = 1/scrollHeight * song.duration * 1000;
-                        setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height,scrollInterval), waitTime);
-                    });
+                    if(this.settings.alwaysOnTop) {
+                        this['$nextTick'](() => {
+                            document.getElementById("lyricBox").scrollTop = 0;
+                            var scrollHeight = document.getElementById("lyricBox").scrollHeight;
+                            var height = document.getElementById("lyricBox").offsetHeight;
+                            console.log("Time: " + typeof song.duration);
+                            var waitTime = height / scrollHeight * song.duration / 2 * 1000;
+                            var scrollInterval = 1 / scrollHeight * song.duration * 1000;
+                            setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height, scrollInterval), waitTime);
+                        });
+                    }
                     this.scheduleNextCall();
                 });
             }
