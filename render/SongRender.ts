@@ -88,7 +88,8 @@ export class SongRender {
                       song.sourceName = result.sourceName;
                     }
                     this.displaySong(song);
-                    if(this.settings.alwaysOnTop) {
+                    console.log(this.settings.autoScroll);
+                    if(this.settings.autoScroll) {
                         this['$nextTick'](() => {
                             document.getElementById("lyricBox").scrollTop = 0;
                             var scrollHeight = document.getElementById("lyricBox").scrollHeight;
