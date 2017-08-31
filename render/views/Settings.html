@@ -56,6 +56,32 @@
                     </li>
                 </ol>
             </fieldset>
+            <fieldset>
+                <legend>Translate</legend>
+                <ol>
+                    <li>
+                        <label>
+                            <span>Enable translate to lyrics</span>
+                            <select v-model="settings.translateLyrics" @change="onChangeSettings()">
+                                <option value="enable-translate-lyrics">Enable</option>
+                                <option value="disable-translate-lyrics">Disable</option>
+                            </select>
+                        </label>
+                    </li>
+                    <li>
+                        <label>
+                            <span>Language</span>
+                            <select v-model="settings.translateLang" @change="onChangeSettings()">
+                                <option value="en-US">English (en-US)</option>
+                                <option value="pt-BR">Portuguese (pt-BR)</option>
+                                <option value="pt-PT">Portuguese (pt-PT)</option>
+                                <option value="es-ES">Spanish (es-ES)</option>
+                                <option value="fr-FR">French (fr-FR)</option>
+                            </select>
+                        </label>
+                    </li>
+                </ol>
+            </fieldset>
         </form>
     </div>
 </div>
