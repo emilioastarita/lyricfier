@@ -38,6 +38,7 @@
     "electron-json-storage": "^2.0.0",
     "he": "^1.1.0",
     "jquery": "^3.1.0",
+    "node-slug": "0.0.2",
     "request": "^2.74.0",
     "toastr": "^2.1.2",
     "vue": "^1.0.26",

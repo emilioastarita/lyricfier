@@ -1,10 +1,11 @@
 import {SearchLyrics} from './plugins/SearchLyrics';
 import {SearchWikia} from "./plugins/SearchWikia";
-
+import {SearchSonglyrics} from "./plugins/SearchSonglyrics";
 import {Genius} from "./plugins/Genius";
+
 import {NormalizeTitles} from "./NormalizeTitles";
 const async = require('async');
-const plugins = [SearchWikia, Genius];
+const plugins = [SearchSonglyrics,Genius,SearchWikia];
 const request = require('request').defaults({timeout: 5000});
 
 interface Result {
