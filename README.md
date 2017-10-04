@@ -16,15 +16,15 @@ git clone https://github.com/emilioastarita/lyricfier.git
 # change dir
 cd lyricfier
 
-# take some coffee and download all the internet with npm
-npm install
+# take some coffee and download all the internet with yarn
+yarn install
 
 ```
 
 ## Run dev
 
 ```
-npm start
+yarn start
 ```
 
 
