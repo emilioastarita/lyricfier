@@ -32,18 +32,28 @@ export class Searcher {
         // run plugins on series
         // if some returns success getting a lyric
         // stop and save the lyric result
-        async.detect(this.plugins, (plugin : SearchLyrics, callback) => {
-            console.log('Searching with', plugin, 'normalizedTitle', normalizedTitle, 'artist', artist);
-            plugin.search(normalizedTitle, artist, (err, result) => {
-                console.warn('Result with', plugin, 'normalizedTitle', normalizedTitle, 'artist', artist, 'err', err, 'result', result);
-                if (err) {
-                    return callback(err, false);
-                }
-                from.lyric = result.lyric;
-                from.sourceName = plugin.name;
-                from.sourceUrl = result.url;
-                callback(null, from);
-            })
-        }, err => cb(err, from));
+        const tasks = this.plugins.map((plugin : SearchLyrics) => {
+            return (callback) => {
+                console.log('Searching with', plugin, 'normalizedTitle', normalizedTitle, 'artist', artist);
+                plugin.search(normalizedTitle, artist, (err, result) => {
+                    console.warn('Result with', plugin, 'normalizedTitle', normalizedTitle, 'artist', artist, 'err', err, 'result', result);
+                    if (err) {
+                        return callback(err);
+                    }
+                    from.lyric = result.lyric;
+                    from.sourceName = plugin.name;
+                    from.sourceUrl = result.url;
+                    callback(null, from);
+                })
+            }
+        });
+        async.parallel(async.reflectAll(tasks), (err, results) => {
+            const result = results.find(x => !x.error);
+            if (result) {
+                cb(null, result.value);
+            } else {
+                cb(err, null);
+            }
+        });
     }
 }

@@ -7,7 +7,7 @@ export class Genius extends SearchLyrics {
     public name = 'Genius';
 
     public search(title: string, artist: string, cb: (error?: any, result?) => void) {
-        let url = `http://genius.com/search?q=${encodeURIComponent(artist)}%20${encodeURIComponent(title)}`;
+        let url = `https://genius.com/api/search/multi?per_page=5&q=${encodeURIComponent(artist)}%20${encodeURIComponent(title)}`;
         this.debug('url', url);
         this.doReq(url, (err, res, body) => {
             if (err || res.statusCode != 200) {
@@ -15,7 +15,12 @@ export class Genius extends SearchLyrics {
                 return cb('Error response searching genius');
             }
             try {
-                let songUrl = /href="(.*)"\s*class="\s*song_link\s*"/.exec(body)[1];
+                let json = JSON.parse(body);
+                if (json.meta.status !== 200) {
+                    this.debug('Error fetching search', err, res);
+                    return cb('Error response searching genius');
+                }
+                let songUrl = json.response.sections[0].hits[0].result.url;
                 this.getSong(songUrl, cb);
             } catch (e) {
                 cb('Genius fail');

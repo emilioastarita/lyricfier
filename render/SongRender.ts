@@ -95,11 +95,7 @@ export class SongRender {
     }
 
     displaySong(song) {
-      const newSongObject = {};
-      for (let k of Object.keys(song)) {
-          newSongObject[k] = song[k];
-      }
-      this.song = newSongObject;
+      this.song = Object.assign({}, song);
     }
 
     isLastSong(song) {
