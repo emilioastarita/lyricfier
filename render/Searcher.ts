@@ -29,9 +29,7 @@ export class Searcher {
     search(title:string, artist:string, cb : (error : any, result : Result) => void) {
         const from = { lyric: null, sourceName: '', sourceUrl: ''};
         const normalizedTitle = this.normalizer.normalize(title);
-        // run plugins on series
-        // if some returns success getting a lyric
-        // stop and save the lyric result
+
         const tasks = this.plugins.map((plugin : SearchLyrics) => {
             return (callback) => {
                 console.log('Searching with', plugin, 'normalizedTitle', normalizedTitle, 'artist', artist);
