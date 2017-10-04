@@ -22,7 +22,7 @@
         </header>
         <div v-if="!settings.hideLyrics" id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyric }}</div>
 
-        <div v-if="!settings.hideLyrics" class="credits-source" v-if="song.sourceName">Source:  <a href="#" @click.prevent="openExternal(song.sourceUrl)">{{song.sourceName}}</a></div>
+        <div v-if="!settings.hideLyrics && song.sourceName" class="credits-source">Source:  <a href="#" @click.prevent="openExternal(song.sourceUrl)">{{song.sourceName}}</a></div>
 
     </div>
     <div v-else class="full-vertical-flex">

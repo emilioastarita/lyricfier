@@ -75,7 +75,7 @@ export class SongRender {
                         this.showError('Plugin error: ' + err);
                         return;
                     }
-                    if (result.lyric === null) {
+                    if (!result || result.lyric === null) {
                       song.lyric = 'Sorry, couldn\'t find lyrics for this song!';
                       song.sourceUrl = null;
                       song.sourceName = null;
