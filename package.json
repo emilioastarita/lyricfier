@@ -10,10 +10,11 @@
     "dist:linux32": "electron-zip-packager  . --arch=ia32 --platform=linux  --overwrite --prune --out=build/ --icon=render/img/icon.png",
     "dist:win32": "electron-zip-packager  . --arch=ia32 --platform=win32  --overwrite --prune --out=build/ --icon=render/img/icon.ico",
     "dist:win64": "electron-zip-packager  . --arch=x64 --platform=win32  --overwrite --prune --out=build/ --icon=render/img/icon.ico",
-    "dist:mac": "electron-zip-packager  . --arch=x64 --platform=mas  --overwrite --prune --out=build/ --icon=render/img/icon.icns",
+    "dist:mac": "electron-packager  . --arch=x64 --platform=mas  --overwrite --prune --out=build/ --icon=render/img/icon.icns && electron-installer-zip build/lyricfier-mas-x64/ build/lyricfier-mac-x64.zip",
     "predist": "tsc",
     "dist": "npm run dist:linux64 && npm run dist:linux32 && npm run dist:win32 && npm run dist:win64 && npm run dist:mac",
     "pretest": "tsc test/*Test.ts --module commonjs && tsc",
+    "postinstall": "electron-builder install-app-deps",
     "test": "mocha"
   },
   "repository": {
@@ -35,7 +36,6 @@
   "dependencies": {
     "async": "^2.5.0",
     "cheerio": "^0.20.0",
-    "electron": "1.7.8",
     "electron-json-storage": "^2.0.0",
     "he": "^1.1.0",
     "jquery": "^3.1.0",
@@ -48,7 +48,9 @@
     "@types/electron-json-storage": "latest",
     "@types/mocha": "latest",
     "@types/node": "4.0.30",
+    "electron": "1.7.8",
     "electron-builder": "^19.34.1",
+    "electron-installer-zip": "^0.1.2",
     "electron-packager": "^9.1.0",
     "electron-zip-packager": "^4.0.2",
     "gulp": "^3.9.1",
@@ -57,5 +59,13 @@
     "less": "^2.7.1",
     "mocha": "^3.2.0",
     "typescript": "^2.5.3"
+  },
+  "build": {
+    "appId": "lyricfier.cloudymedia.com",
+    "productName": "Lyricfier",
+    "asar": true,
+    "directories": {
+      "output": "build"
+    }
   }
 }
