@@ -202,7 +202,7 @@ export class SpotifyService {
                 this.oAuthToken.t = null;
                 return cb(err);
             }
-            console.log('getStatus', status);
+
             if (status.track && status.track.track_resource) {
 
                 const result = {

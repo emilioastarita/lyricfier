@@ -25,7 +25,7 @@ export class SearchLyrics {
                 'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/52.0.2743.116 Safari/537.36',
                 'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8',
                 'Accept-Encoding': 'gzip, deflate, sdch',
-                'Accept-Language': 'es,en-US;q=0.8,en;q=0.6,pt;q=0.4',
+                'Accept-Language': 'en-US;q=0.8,en;q=0.6,pt;q=0.4',
             }
         };
         return this.req(opt, cb);
@@ -33,6 +33,10 @@ export class SearchLyrics {
 
     public search(title: string, artist: string, cb: (error?: any, result?: SearchResult) => void) {
 
+    }
+
+    protected debug(...args) {
+        console.debug(`${this.name}`, ...args);
     }
 }
 

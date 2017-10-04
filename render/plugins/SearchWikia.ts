@@ -9,7 +9,7 @@ export class SearchWikia extends SearchLyrics {
 
     public search(title: string, artist: string, cb: (error?: any, lyrics?) => void) {
         let url = `http://lyrics.wikia.com/api.php?action=lyrics&artist=${encodeURIComponent(artist)}&song=${encodeURIComponent(title)}&fmt=json&func=getSong`;
-
+        console.log('Wikia', title, artist, url);
         this.doReq(url, (err, res, body) => {
             if (err || res.statusCode != 200) {
                 return cb('Error response searching wikia');
@@ -31,8 +31,6 @@ export class SearchWikia extends SearchLyrics {
         this.doReq(url, (err, res, body) => {
 
             if (err || res.statusCode != 200) {
-                console.log('Err', err);
-                console.log('Res', res);
                 return cb('Error response getting song from wikia');
             }
             let rawHtml = cheerio.load(body)('.lyricbox').html().replace(/<br>/g, '!NEWLINE!');

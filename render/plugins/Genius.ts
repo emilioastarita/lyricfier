@@ -1,4 +1,5 @@
 import {SearchLyrics} from "./SearchLyrics";
+
 const cheerio = require("cheerio");
 
 export class Genius extends SearchLyrics {
@@ -6,9 +7,11 @@ export class Genius extends SearchLyrics {
     public name = 'Genius';
 
     public search(title: string, artist: string, cb: (error?: any, result?) => void) {
-        let url = `http://genius.com/search?q=${encodeURIComponent(artist)} ${encodeURIComponent(title)}`;
+        let url = `http://genius.com/search?q=${encodeURIComponent(artist)}%20${encodeURIComponent(title)}`;
+        this.debug('url', url);
         this.doReq(url, (err, res, body) => {
             if (err || res.statusCode != 200) {
+                this.debug('Error fetching search', err, res);
                 return cb('Error response searching genius');
             }
             try {
@@ -23,12 +26,14 @@ export class Genius extends SearchLyrics {
     private getSong(url: string, cb: (error?: any, result?) => void) {
         this.doReq(url, (err, res, body) => {
             if (err || res.statusCode != 200) {
+                this.debug('Error fetching song', err, res);
                 return cb("Error response getting song from Genius");
             }
             try {
                 let lyric = this.parseContent(body);
                 return cb(null, {lyric: lyric, url: url});
             } catch (e) {
+                this.debug('Error parsing song', e, body);
                 cb("Genius fail parsing lyrics");
             }
         });

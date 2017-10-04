@@ -33,7 +33,7 @@
   },
   "homepage": "https://github.com/emilioastarita/lyrics-spotify#readme",
   "dependencies": {
-    "async": "^2.0.1",
+    "async": "^2.5.0",
     "cheerio": "^0.20.0",
     "electron": "1.8.1",
     "electron-json-storage": "^2.0.0",
