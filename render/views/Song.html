@@ -20,9 +20,17 @@
             <h3>{{ song.title }}</h3>
             <h4>{{ song.artist }}</h4>
         </header>
-        <div v-if="!settings.hideLyrics" id="lyricBox" class="lyrics" :class="settings.fontSize">{{ song.lyric }}</div>
 
-        <div v-if="!settings.hideLyrics && song.sourceName" class="credits-source">Source:  <a href="#" @click.prevent="openExternal(song.sourceUrl)">{{song.sourceName}}</a></div>
+        <div class="lyrics">
+            <div v-if="!settings.hideLyrics" id="lyricBox" class="lyrics-left" :class="settings.fontSize" v-bind:class="{'resized40': translatedSong.lyrics}">{{ song.lyric }}</div>
+            <div v-if="!settings.hideLyrics && translatedSong.lyrics" id="lyricBox" class="lyrics-right" :class="settings.fontSize">{{ translatedSong.lyrics }}</div>
+        </div>
+
+        <div v-if="!settings.hideLyrics" class="credits-source" >
+            <span v-if="song.sourceName">Source:  <a href="#" @click.prevent="openExternal(song.sourceUrl)">{{song.sourceName}}</a></span>
+            <span v-if="settings.translateLyrics" style="cursor: pointer;" @click.prevent="translateLyrics()"> | Translate lyrics</span>
+            <a href="#" v-if="settings.translateLyrics" @click.prevent="openExternal(translatedSong.sourceUrl)">{{translatedSong.sourceName}}</a>
+        </div>
 
     </div>
     <div v-else class="full-vertical-flex">

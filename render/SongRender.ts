@@ -1,5 +1,6 @@
 import Component from 'vue-class-component';
 import {Searcher} from "./Searcher";
+import {Translaters} from "./Translaters";
 import {template} from './template';
 import {SpotifyService} from './SpotifyService';
 
@@ -23,8 +24,10 @@ export class SongRender {
     protected lastSongSync;
     protected service:SpotifyService;
     protected song;
+    protected translatedSong;
     protected shell;
     protected searcher: Searcher;
+    protected translaters: Translaters;
     protected showError;
     protected timer = null;
     protected settings;
@@ -32,12 +35,14 @@ export class SongRender {
     data() {
         return {
             song: null,
+            translatedSong: {},
             lastSongSync: {},
         }
     }
 
     beforeCompile() {
         this.searcher = new Searcher();
+        this.translaters = new Translaters();
     }
 
 
@@ -68,6 +73,7 @@ export class SongRender {
             } else {
                 console.log('is not last song searching by title and artist');
                 song.lyric = 'Loading Lyrics...';
+                this.translatedSong = {};
                 this.displaySong(song);
                 this.saveLastSong(song);
                 this.searcher.search(song.title, song.artist, (err, result) => {
@@ -122,6 +128,36 @@ export class SongRender {
 
     openExternal(url) {
         this.shell.openExternal(url);
+    }
+
+    translateLyrics() {
+        console.log("Language: " + this.settings.translateLang);
+        this.translatedSong = {
+            lyrics: 'Searching translated lyrics...',
+            sourceName: '',
+            sourceUrl: ''
+        };
+
+        this.translaters.translate(this.song.title, this.song.artist, (err, result) => {
+            if(!err) {
+                try{
+                    result.translated.forEach((translated) => {
+                        if(translated.lang == this.settings.translateLang){
+                            console.log("Founded translated lyrics");
+                            this.translatedSong = translated;
+                            this.translatedSong.sourceName = result.sourceName;
+                            this.translatedSong.sourceUrl = result.sourceUrl;
+                        }
+                    });
+                } catch(e) {
+                    this.translatedSong = {
+                        lyrics: 'Translated lyrics not founded.',
+                        sourceName: '',
+                        sourceUrl: ''
+                    };
+                }
+            }
+        });
     }
 
     resizeOnLyricsHide() {

@@ -119,7 +119,12 @@
     }
 }
 
-.lyrics {
+.lyrics-right {
+    width: 100%;
+    position: relative;
+}
+
+.lyrics-left {
     white-space: pre-wrap;
     flex: 1;
     overflow: auto;
@@ -127,6 +132,28 @@
     line-height: 1.75;
     position: relative;
     user-select: all;
+    float: left;
+    width: 100%;
+
+    &:first-letter {
+        text-transform: capitalize;
+    }
+}
+
+.resized40{
+    width: 40%;
+}
+
+.lyrics-right {
+    white-space: pre-wrap;
+    flex: 1;
+    overflow: auto;
+    padding: 1rem;
+    line-height: 1.75;
+    position: relative;
+    user-select: all;
+    float: right;
+    width: 40%;
 
     &:first-letter {
         text-transform: capitalize;
