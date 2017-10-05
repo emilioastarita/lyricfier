@@ -82,6 +82,10 @@ export class Lyricfier {
         const iconPath = this.getTrayIcon();
         this.appIcon = new electron.Tray(iconPath);
         this.appIcon.setContextMenu(this.createTrayMenu());
+
+        this.appIcon.on('click', () => {
+            this.window.show();
+        });
     }
 
     subscribeSettingsEvents() {

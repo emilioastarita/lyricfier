@@ -7,6 +7,7 @@ export interface SettingsValues {
     theme: 'dark'|'light';
     fontSize: 'eight-pt'|'ten-pt'|'twelve-pt'|'fourteen-pt'|'sixteen-pt';
     refreshInterval: number;
+    closeToTray: boolean;
 }
 
 export const defaultSettings: SettingsValues = {
@@ -14,7 +15,8 @@ export const defaultSettings: SettingsValues = {
     alwaysOnTop: false,
     theme: 'light',
     fontSize: 'twelve-pt',
-    refreshInterval: 5000
+    refreshInterval: 5000,
+    closeToTray: false
 };
 
 export class Settings {

@@ -7,9 +7,11 @@
     flex: 0 0 auto;
     display: flex;
     border-bottom: 1px solid rgba(0, 0, 0, .125);
-    width: ~"calc(100% - 2rem)";
+    width: ~"calc(100% - 4rem)";
     -webkit-app-region: drag;
-    -webkit-mask-image: linear-gradient(to right, white 50%, transparent);
+    -webkit-mask-image: linear-gradient(to right, rgba(255,255,255,0) 0%,rgba(255,255,255,0.8) 20%,rgba(255,255,255,0.99) 49%,rgba(255,255,255,1) 50%,rgba(255,255,255,0.8) 80%,rgba(255,255,255,0) 100%);
+    position: relative;
+    left: 2rem;
 
     h1 {
         flex: 1;

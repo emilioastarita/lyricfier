@@ -1,5 +1,5 @@
 import Component from 'vue-class-component';
-import {ipcRenderer, shell}  from 'electron';
+import {ipcRenderer, shell, remote}  from 'electron';
 import {SettingsRender} from './SettingsRender';
 import {SongRender} from './SongRender';
 import {template} from './template';
@@ -92,6 +92,14 @@ class LyricfierRender {
 
     isView(page) {
         return this.currentView === page;
+    }
+
+    closeApp() {
+        if (this.settings.closeToTray){
+            remote.getCurrentWindow().hide();
+        } else {
+            remote.getCurrentWindow().close();
+        }
     }
 }
 
