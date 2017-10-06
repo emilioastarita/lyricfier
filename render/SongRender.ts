@@ -85,13 +85,36 @@ export class SongRender {
                       song.sourceName = result.sourceName;
                     }
                     this.displaySong(song);
-                    this['$nextTick'](() => {
-                        document.getElementById("lyricBox").scrollTop = 0;
-                    });
+                    console.log(this.settings.autoScroll);
+                    if(this.settings.autoScroll) {
+                        this.scrollPage(song)
+                    }
                     this.scheduleNextCall();
                 });
             }
         });
+    }
+    scrollPage(song) {
+        this['$nextTick'](() => {
+            document.getElementById("lyricBox").scrollTop = 0;
+            let scrollHeight = document.getElementById("lyricBox").scrollHeight;
+            var height = document.getElementById("lyricBox").offsetHeight;
+            console.log("Time: " + typeof song.duration);
+            var waitTime = height / scrollHeight * song.duration / 2 * 1000;
+            var scrollInterval = 1 / scrollHeight * song.duration * 1000;
+            setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height, scrollInterval), waitTime);
+        });
+    }
+
+    pageScroll(currentSong, scrollCount, interval) {
+        document.getElementById("lyricBox").scrollTop += 1;
+        if(this.song.title != currentSong.title) {
+            console.log("Switched song")
+        }
+        else if(scrollCount > 0 ) {
+            setTimeout(this.pageScroll.bind(null, currentSong, scrollCount-1, interval), interval);
+        }
+
     }
 
     displaySong(song) {

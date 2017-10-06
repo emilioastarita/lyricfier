@@ -87,7 +87,8 @@ export class SpotifyService {
             'rejectUnauthorized': false
         }, (err, status, body) => {
             if (err) {
-                console.error('Error getting csrf token URL: ', url);
+                console.error('Error getting csrf token URL: ', status);
+                console.error(err);
                 return cb(err);
             }
             const json = JSON.parse(body);
@@ -202,9 +203,8 @@ export class SpotifyService {
                 this.oAuthToken.t = null;
                 return cb(err);
             }
-
+            
             if (status.track && status.track.track_resource) {
-
                 const result = {
                     playing: status.playing,
                     artist: status.track.artist_resource ? status.track.artist_resource.name : 'Unknown',
@@ -212,7 +212,8 @@ export class SpotifyService {
                     album: {
                         name: 'Unknown',
                         images: null
-                    }
+                    },
+                    duration: status.track.length
                 };
 
                 if (status.track.album_resource) {
