@@ -33,22 +33,20 @@ export class SongRender {
         return {
             song: null,
             lastSongSync: {},
-            searcher: new Searcher(),
         }
     }
+
+    beforeCompile() {
+        this.searcher = new Searcher();
+    }
+
+
 
     scheduleNextCall() {
         if (this.timer) {
             clearTimeout(this.timer);
         }
-        console.warn(
-          'Scheduling ',
-          this.settings.refreshInterval / 1000,
-          ' seconds'
-        );
-        this.timer = setTimeout(() => {
-            this.refresh();
-        }, this.settings.refreshInterval);
+        this.timer = setTimeout(this.refresh.bind(this), this.settings.refreshInterval);
     }
 
     ready() {
@@ -57,7 +55,6 @@ export class SongRender {
 
     refresh() {
         this.resizeOnLyricsHide();
-        console.log('refreshing');
         this.getSpotify().getCurrentSong((err, song) => {
             if (err) {
                 this.showError('Current song error: ' + err);
@@ -78,7 +75,7 @@ export class SongRender {
                         this.showError('Plugin error: ' + err);
                         return;
                     }
-                    if (result.lyric === null) {
+                    if (!result || result.lyric === null) {
                       song.lyric = 'Sorry, couldn\'t find lyrics for this song!';
                       song.sourceUrl = null;
                       song.sourceName = null;
@@ -121,11 +118,7 @@ export class SongRender {
     }
 
     displaySong(song) {
-      const newSongObject = {};
-      for (let k of Object.keys(song)) {
-          newSongObject[k] = song[k];
-      }
-      this.song = newSongObject;
+      this.song = Object.assign({}, song);
     }
 
     isLastSong(song) {

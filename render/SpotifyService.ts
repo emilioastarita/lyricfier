@@ -1,11 +1,13 @@
+import {encodeData} from "./Utils";
+
 const request = require('request').defaults({timeout: 5000});
 const async = require('async');
 const initialPortTest = 4370;
 
 export class SpotifyService {
     protected https = false;
-    protected foundPort  = false;
-    protected port : number;
+    protected foundPort = false;
+    protected port: number;
     protected portTries = 15;
     protected albumImagesCache = {};
 
@@ -14,7 +16,7 @@ export class SpotifyService {
         expires: null
     };
     protected csrfToken = null;
-    protected queue = [];
+
 
 
     protected static headers() {
@@ -24,7 +26,7 @@ export class SpotifyService {
         };
     }
 
-    protected url(u:string) {
+    protected url(u: string) {
         const protocol = this.https ? 'https' : 'http';
         return `${protocol}://127.0.0.1:${this.port}${u}`;
     }
@@ -34,7 +36,7 @@ export class SpotifyService {
             return cb(null, this.oAuthToken.t);
         }
         request.get({
-            url:'https://open.spotify.com/token',
+            url: 'https://open.spotify.com/token',
             rejectUnauthorized: false,
             headers: SpotifyService.headers()
         }, (err, status, body) => {
@@ -45,13 +47,13 @@ export class SpotifyService {
                 const json = JSON.parse(body);
                 this.oAuthToken.t = json.t;
                 return cb(null, json.t);
-            } catch(e) {
+            } catch (e) {
                 return cb(e);
             }
         });
     }
 
-    public detectPort(cb : (err, port : number) => void) {
+    public detectPort(cb: (err, port: number) => void) {
         if (!this.foundPort) {
             this.port = initialPortTest;
         }
@@ -96,7 +98,7 @@ export class SpotifyService {
     }
 
     public needsTokens(fn) {
-        this.detectPort( (err) => {
+        this.detectPort((err) => {
             if (err) {
                 const failDetectPort = 'No port found! Is spotify running?';
                 console.error(failDetectPort, err);
@@ -118,7 +120,7 @@ export class SpotifyService {
                 'oauth': tokens.oauth,
                 'csrf': tokens.csrf,
             };
-            const url = this.url('/remote/status.json') + '?' + this.encodeData(params);
+            const url = this.url('/remote/status.json') + '?' + encodeData(params);
 
             request(url, {
                 headers: SpotifyService.headers(),
@@ -132,7 +134,7 @@ export class SpotifyService {
                 try {
                     const json = JSON.parse(body);
                     cb(null, json);
-                } catch(e) {
+                } catch (e) {
                     const msgParseFailed = 'Status response from spotify failed';
                     console.error(msgParseFailed, ' JSON body: ', body);
                     cb(msgParseFailed, null);
@@ -142,7 +144,7 @@ export class SpotifyService {
         });
     }
 
-    protected getAlbumImages(albumUri:string, cb) {
+    protected getAlbumImages(albumUri: string, cb) {
         if (this.albumImagesCache[albumUri]) {
             return cb(null, this.albumImagesCache[albumUri])
         }
@@ -158,9 +160,9 @@ export class SpotifyService {
                     const parsed = JSON.parse(body);
                     finish(null, parsed.images);
                     this.albumImagesCache[albumUri] = parsed.images;
-                } catch(e) {
+                } catch (e) {
                     const msgParseFail = 'Failed to parse response from spotify api';
-                    console.error(msgParseFail, 'URL USED: ',url);
+                    console.error(msgParseFail, 'URL USED: ', url);
                     finish(msgParseFail, null);
                 }
 
@@ -170,7 +172,7 @@ export class SpotifyService {
 
     }
 
-    public pause(pause:boolean, cb) {
+    public pause(pause: boolean, cb) {
         this.needsTokens((err, tokens) => {
             if (err) return cb(err);
             const params = {
@@ -178,7 +180,7 @@ export class SpotifyService {
                 'csrf': tokens.csrf,
                 'pause': pause ? 'true' : 'false',
             };
-            const url = this.url('/remote/pause.json') + '?' + this.encodeData(params);
+            const url = this.url('/remote/pause.json') + '?' + encodeData(params);
             request(url, {
                 headers: SpotifyService.headers(),
                 'rejectUnauthorized': false,
@@ -194,13 +196,14 @@ export class SpotifyService {
     }
 
     public getCurrentSong(cb) {
-        this.getStatus((err, status)=> {
+        this.getStatus((err, status) => {
             if (err) {
                 this.foundPort = false;
                 this.csrfToken = null;
                 this.oAuthToken.t = null;
                 return cb(err);
             }
+            
             if (status.track && status.track.track_resource) {
                 const result = {
                     playing: status.playing,
@@ -230,10 +233,5 @@ export class SpotifyService {
         });
     }
 
-    protected encodeData(data) {
-        return Object.keys(data).map(function (key) {
-            return [key, data[key]].map(encodeURIComponent).join("=");
-        }).join("&");
-    }
 
 }

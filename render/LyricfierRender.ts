@@ -1,5 +1,3 @@
-/// <reference path="./render-typings.d.ts" />
-
 import Component from 'vue-class-component';
 import {ipcRenderer, shell}  from 'electron';
 import {SettingsRender} from './SettingsRender';
