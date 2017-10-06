@@ -90,29 +90,32 @@ export class SongRender {
                     this.displaySong(song);
                     console.log(this.settings.autoScroll);
                     if(this.settings.autoScroll) {
-                        this['$nextTick'](() => {
-                            document.getElementById("lyricBox").scrollTop = 0;
-                            var scrollHeight = document.getElementById("lyricBox").scrollHeight;
-                            var height = document.getElementById("lyricBox").offsetHeight;
-                            console.log("Time: " + typeof song.duration);
-                            var waitTime = height / scrollHeight * song.duration / 2 * 1000;
-                            var scrollInterval = 1 / scrollHeight * song.duration * 1000;
-                            setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height, scrollInterval), waitTime);
-                        });
+                        this.scrollPage(song)
                     }
                     this.scheduleNextCall();
                 });
             }
         });
     }
+    scrollPage(song) {
+        this['$nextTick'](() => {
+            document.getElementById("lyricBox").scrollTop = 0;
+            let scrollHeight = document.getElementById("lyricBox").scrollHeight;
+            var height = document.getElementById("lyricBox").offsetHeight;
+            console.log("Time: " + typeof song.duration);
+            var waitTime = height / scrollHeight * song.duration / 2 * 1000;
+            var scrollInterval = 1 / scrollHeight * song.duration * 1000;
+            setTimeout(this.pageScroll.bind(null, this.song, scrollHeight - height, scrollInterval), waitTime);
+        });
+    }
 
-    pageScroll(aSong, i, s) {
+    pageScroll(currentSong, scrollCount, interval) {
         document.getElementById("lyricBox").scrollTop += 1;
-        if(this.song.title != aSong.title) {
+        if(this.song.title != currentSong.title) {
             console.log("Switched song")
         }
-        else if(i > 0 ) {
-            setTimeout(this.pageScroll.bind(null, aSong, i-1, s), s);
+        else if(scrollCount > 0 ) {
+            setTimeout(this.pageScroll.bind(null, currentSong, scrollCount-1, interval), interval);
         }
 
     }

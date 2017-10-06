@@ -80,7 +80,6 @@ export class SpotifyService {
             return cb(null, this.csrfToken);
         }
         const url = this.url('/simplecsrf/token.json');
-        console.log("========");
         request(url, {
             headers: SpotifyService.headers(),
             'rejectUnauthorized': false

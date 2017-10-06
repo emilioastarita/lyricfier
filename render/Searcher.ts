@@ -1,5 +1,6 @@
 import {SearchLyrics} from './plugins/SearchLyrics';
 import {SearchWikia} from "./plugins/SearchWikia";
+
 import {Genius} from "./plugins/Genius";
 import {NormalizeTitles} from "./NormalizeTitles";
 const async = require('async');
