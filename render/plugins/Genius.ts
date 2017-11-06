@@ -20,8 +20,15 @@ export class Genius extends SearchLyrics {
                     this.debug('Error fetching search', err, res);
                     return cb('Error response searching genius');
                 }
-                let songUrl = json.response.sections[0].hits[0].result.url;
-                this.getSong(songUrl, cb);
+                let i = 0;
+                while (i < 5) {
+                    if (json.response.sections[i].type === 'song'){
+                        let songUrl = json.response.sections[i].hits[0].result.url;
+                        this.getSong(songUrl, cb);
+                        break;
+                    }
+                    i++;
+                }
             } catch (e) {
                 cb('Genius fail');
             }
