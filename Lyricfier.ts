@@ -38,7 +38,7 @@ export class Lyricfier {
         let trayImage = this.getImg('icon.png');
         // Determine appropriate icon for platform
         if (platform == 'darwin') {
-            trayImage = this.getImg('tray-icon-mac.png');
+            trayImage = this.getImg('tray-icon-macTemplate.png');
         }
         else if (platform == 'win32') {
             trayImage = this.getImg('tray-icon-win.ico');
