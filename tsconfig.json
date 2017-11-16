@@ -6,11 +6,11 @@
     "experimentalDecorators": true
   },
   "files": [
-    "gulpfile",
-    "main",
-    "Lyricfier",
-    "render/plugins/SearchLyrics",
-    "render/plugins/SearchWikia",
+    "gulpfile.ts",
+    "main.ts",
+    "Lyricfier.ts",
+    "render/plugins/SearchLyrics.ts",
+    "render/plugins/SearchWikia.ts",
     "render/Searcher.ts",
     "render/NormalizeTitles.ts",
     "render/LyricfierRender.ts",
