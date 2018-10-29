@@ -23,6 +23,11 @@
                             </select>
                         </label>
                     </li>
+                    <li>
+                        <label>
+                            <input type="checkbox" v-model="settings.closeToTray" @change="onChangeSettings()"> Close button minimizes to tray
+                        </label>
+                    </li>
                 </ol>
             </fieldset>
             <fieldset>
